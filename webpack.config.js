@@ -31,6 +31,7 @@ module.exports = {
 		new HtmlWebPackPlugin({
 			template: path.resolve(__dirname, 'public/index.html'),
 			filename: 'index.html',
+			favicon: './assets/logo.jpeg',
 		}),
 	],
 };
