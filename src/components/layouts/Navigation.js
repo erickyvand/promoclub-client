@@ -114,15 +114,15 @@ const Navigation = () => {
 
 	return (
 		<div className={classes.grow}>
-			<AppBar position='static' style={{ backgroundColor: '#126eb0' }}>
+			<AppBar position='fixed' style={{ backgroundColor: '#126eb0' }}>
 				<Container>
 					<Toolbar>
-						<Typography className={classes.title} variant='h6' noWrap>
+						<Typography className={classes.title} variant='h4'>
 							<NavLink
 								to='/'
 								exact
-								className={classes.spanString}
-								activeClassName={classes.active}
+								className='link-active'
+								activeClassName='active'
 							>
 								Promoclub
 							</NavLink>
@@ -159,13 +159,13 @@ const Navigation = () => {
 								color='inherit'
 							>
 								<AccountCircle />{' '}
-								<span className={classes.spanString}>Ericky Vand</span>
+								<span className='link-active'>Ericky Vand</span>
 							</IconButton>
 							<IconButton color='inherit'>
 								<NavLink
 									to='/signup'
-									className={classes.spanString}
-									activeClassName={classes.active}
+									className='link-active'
+									activeClassName='active'
 								>
 									Signup
 								</NavLink>
@@ -173,8 +173,8 @@ const Navigation = () => {
 							<IconButton color='inherit'>
 								<NavLink
 									to='/login'
-									className={classes.spanString}
-									activeClassName={classes.active}
+									className='link-active'
+									activeClassName='active'
 								>
 									Login
 								</NavLink>

@@ -62,14 +62,9 @@ const useStyles = makeStyles(theme => ({
 			display: 'none',
 		},
 	},
-	spanString: {
-		fontSize: '0.8em',
-		color: 'white',
-		textDecoration: 'none',
-	},
-	active: {
-		borderBottom: '1px solid white',
-		fontWeight: 'bold',
+	// Landing page
+	card: {
+		minHeight: '450px',
 	},
 }));
 
