@@ -22,13 +22,23 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.56",
+    "axios": "^0.19.2",
     "css-loader": "^4.0.0",
+    "dotenv": "^8.2.0",
     "file-loader": "^6.0.0",
+    "formik": "^2.1.5",
+    "query-string": "^6.13.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-fade-in": "^1.1.0",
+    "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
-    "style-loader": "^1.2.1"
+    "redux": "^4.0.5",
+    "redux-promise-middleware": "^6.1.2",
+    "redux-thunk": "^2.3.0",
+    "style-loader": "^1.2.1",
+    "yup": "^0.29.2"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",
