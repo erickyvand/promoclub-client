@@ -6,6 +6,7 @@ import { signupAction } from '../../redux/actions/authAction';
 import useStyles from '../../styles/user';
 import { signupSchema } from '../../validations/userValidation';
 import Footer from '../layouts/Footer';
+import { Link } from 'react-router-dom';
 
 const handleDisable = (props, signup) => {
 	if (
@@ -34,7 +35,7 @@ const Signup = () => {
 	};
 	return (
 		<div className={classes.root}>
-			<Grid container direction='row' justify='space-between'>
+			<Grid container direction='row' justify='center'>
 				<Grid item xs={12} sm={12} md={5} component={Paper} elevation={6}>
 					<div className={classes.paper}>
 						<Typography variant='h6'>
@@ -182,13 +183,12 @@ const Signup = () => {
 								</Form>
 							)}
 						</Formik>
+						<p>
+							Already have an account? <Link to='/login'>Login</Link>
+						</p>
 					</div>
 				</Grid>
-				<Grid item xs={12} sm={12} md={5}>
-					<Paper>Login</Paper>
-				</Grid>
 			</Grid>
-			<Footer />
 		</div>
 	);
 };

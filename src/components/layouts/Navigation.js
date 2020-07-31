@@ -143,7 +143,13 @@ const Navigation = () => {
 						<div className={classes.grow} />
 						<div className={classes.sectionDesktop}>
 							<IconButton color='inherit'>
-								<HomeIcon />
+								<NavLink
+									to='/feed'
+									className='link-active'
+									activeClassName='active'
+								>
+									<HomeIcon />
+								</NavLink>
 							</IconButton>
 							<IconButton color='inherit'>
 								<Badge badgeContent={100} color='secondary'>
