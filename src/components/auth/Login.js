@@ -10,28 +10,39 @@ import {
 	Collapse,
 } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, withRouter } from 'react-router-dom';
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginAction } from '../../redux/actions/authAction';
+import { loginSchema } from '../../validations/userValidation';
 
-const loginSchema = yup.object({
-	email: yup.string().email().required(),
-	password: yup.string().required(),
-});
+const handleDisable = (props, login) => {
+	if (!props.values.email || !props.values.password || login.loading) {
+		return true;
+	} else {
+		return false;
+	}
+};
 
 const Login = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
 	const login = useSelector(state => state.login);
-	console.log(login);
 
 	const [open, setOpen] = useState(true);
 
 	const handleLoginSubmit = values => {
 		dispatch(loginAction(values));
+	};
+
+	const handleGoogle = () => {
+		location.replace(`${process.env.API_URL}/api/auth/google`);
+	};
+
+	const handleFacebook = () => {
+		location.replace(`${process.env.API_URL}/api/auth/facebook`);
 	};
 
 	if (login.redirect) {
@@ -40,7 +51,7 @@ const Login = () => {
 		sessionStorage.setItem('lastName', login.data.user.lastName);
 		sessionStorage.setItem('role', login.data.user.role);
 		sessionStorage.setItem('token', login.data.token);
-		return <Redirect to='/feed' />;
+		location.href = '/feed';
 	}
 
 	const handleClode = () => {
@@ -112,9 +123,10 @@ const Login = () => {
 										type='submit'
 										variant='contained'
 										fullWidth
+										disabled={handleDisable(props, login)}
 										className={classes.submit}
 									>
-										Login
+										{login.loading ? 'Loading...' : 'Signup'}
 									</Button>
 								</form>
 							)}
@@ -131,6 +143,7 @@ const Login = () => {
 								<Avatar
 									alt='Google'
 									src='/assets/google.jpg'
+									onClick={handleGoogle}
 									className={classes.avatarLarge}
 								/>
 							</Grid>
@@ -139,6 +152,7 @@ const Login = () => {
 								<Avatar
 									alt='Facebook'
 									src='/assets/facebook.png'
+									onClick={handleFacebook}
 									className={classes.avatarLarge}
 								/>
 							</Grid>

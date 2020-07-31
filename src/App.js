@@ -9,6 +9,7 @@ import Landing from './components/layouts/Landing';
 import PageNotFound from './components/layouts/PageNotFound';
 import store from './redux/store';
 import Feed from './components/posts/Feed';
+import Oauth from './components/auth/Oauth';
 
 const App = () => {
 	return (
@@ -20,6 +21,7 @@ const App = () => {
 						<Route path='/' exact component={Landing} />
 						<Route path='/signup' exact component={Signup} />
 						<Route path='/login' exact component={Login} />
+						<Route path='/oauth' exact component={Oauth} />
 						<Route path='/feed' exact component={Feed} />
 						<Route exact component={PageNotFound} />
 					</Switch>
