@@ -72,43 +72,50 @@ const Navigation = () => {
 			open={isMobileMenuOpen}
 			onClose={handleMobileMenuClose}
 		>
-			<MenuItem>
-				<IconButton color='inherit'>
-					<HomeIcon />
-				</IconButton>
-				<p>Home</p>
-			</MenuItem>
-			<MenuItem>
-				<IconButton aria-label='show 11 new notifications' color='inherit'>
-					<Badge badgeContent={11} color='secondary'>
-						<NotificationsIcon />
-					</Badge>
-				</IconButton>
-				<p>Notifications</p>
-			</MenuItem>
-			<MenuItem onClick={handleProfileMenuOpen}>
-				<IconButton
-					aria-label='account of current user'
-					aria-controls='primary-search-account-menu'
-					aria-haspopup='true'
-					color='inherit'
-				>
-					<AccountCircle />
-				</IconButton>
-				<p>Profile</p>
-			</MenuItem>
-			<MenuItem>
-				<IconButton color='inherit'>
-					<VpnKeyIcon />
-				</IconButton>
-				<p>Signup</p>
-			</MenuItem>
-			<MenuItem>
-				<IconButton color='inherit'>
-					<LockOpenIcon />
-				</IconButton>
-				<p>Login</p>
-			</MenuItem>
+			{sessionStorage.getItem('id') ? (
+				<div>
+					<MenuItem>
+						<IconButton color='inherit'>
+							<HomeIcon />
+						</IconButton>
+						<p>Home</p>
+					</MenuItem>
+					<MenuItem>
+						<IconButton aria-label='show 11 new notifications' color='inherit'>
+							<Badge badgeContent={11} color='secondary'>
+								<NotificationsIcon />
+							</Badge>
+						</IconButton>
+						<p>Notifications</p>
+					</MenuItem>
+					<MenuItem onClick={handleProfileMenuOpen}>
+						<IconButton
+							aria-label='account of current user'
+							aria-controls='primary-search-account-menu'
+							aria-haspopup='true'
+							color='inherit'
+						>
+							<AccountCircle />
+						</IconButton>
+						<p>Profile</p>
+					</MenuItem>
+				</div>
+			) : (
+				<div>
+					<MenuItem>
+						<IconButton color='inherit'>
+							<VpnKeyIcon />
+						</IconButton>
+						<p>Signup</p>
+					</MenuItem>
+					<MenuItem>
+						<IconButton color='inherit'>
+							<LockOpenIcon />
+						</IconButton>
+						<p>Login</p>
+					</MenuItem>
+				</div>
+			)}
 		</Menu>
 	);
 
@@ -117,74 +124,84 @@ const Navigation = () => {
 			<AppBar position='fixed' style={{ backgroundColor: '#126eb0' }}>
 				<Container>
 					<Toolbar>
-						<Typography className={classes.title} variant='h4'>
-							<NavLink
-								to='/'
-								exact
-								className='link-active'
-								activeClassName='active'
-							>
-								Promoclub
-							</NavLink>
-						</Typography>
-						<div className={classes.search}>
-							<div className={classes.searchIcon}>
-								<SearchIcon />
+						{!sessionStorage.getItem('id') ? (
+							<Typography className={classes.title} variant='h4'>
+								<NavLink
+									to='/'
+									exact
+									className='link-active'
+									activeClassName='active'
+								>
+									Promoclub
+								</NavLink>
+							</Typography>
+						) : (
+							<div className={classes.search}>
+								<div className={classes.searchIcon}>
+									<SearchIcon />
+								</div>
+								<InputBase
+									placeholder='Search user by names…'
+									classes={{
+										root: classes.inputRoot,
+										input: classes.inputInput,
+									}}
+									inputProps={{ 'aria-label': 'search' }}
+								/>
 							</div>
-							<InputBase
-								placeholder='Search user by names…'
-								classes={{
-									root: classes.inputRoot,
-									input: classes.inputInput,
-								}}
-								inputProps={{ 'aria-label': 'search' }}
-							/>
-						</div>
+						)}
 						<div className={classes.grow} />
 						<div className={classes.sectionDesktop}>
-							<IconButton color='inherit'>
-								<NavLink
-									to='/feed'
-									className='link-active'
-									activeClassName='active'
-								>
-									<HomeIcon />
-								</NavLink>
-							</IconButton>
-							<IconButton color='inherit'>
-								<Badge badgeContent={100} color='secondary'>
-									<NotificationsIcon />
-								</Badge>
-							</IconButton>
-							<IconButton
-								edge='end'
-								aria-label='account of current user'
-								aria-controls={menuId}
-								aria-haspopup='true'
-								onClick={handleProfileMenuOpen}
-								color='inherit'
-							>
-								<AccountCircle />{' '}
-								<span className='link-active'>Ericky Vand</span>
-							</IconButton>
-							<IconButton color='inherit'>
-								<NavLink
-									to='/signup'
-									className='link-active'
-									activeClassName='active'
-								>
-									Signup
-								</NavLink>
-							</IconButton>
-							<IconButton color='inherit'>
-								<NavLink
-									to='/login'
-									className='link-active'
-									activeClassName='active'
-								>
-									Login
-								</NavLink>
-							</IconButton>
+							{sessionStorage.getItem('id') ? (
+								<div>
+									<IconButton color='inherit'>
+										<NavLink
+											to='/feed'
+											className='link-active'
+											activeClassName='active'
+										>
+											<HomeIcon />
+										</NavLink>
+									</IconButton>
+									<IconButton color='inherit'>
+										<Badge badgeContent={100} color='secondary'>
+											<NotificationsIcon />
+										</Badge>
+									</IconButton>
+									<IconButton
+										edge='end'
+										aria-label='account of current user'
+										aria-controls={menuId}
+										aria-haspopup='true'
+										onClick={handleProfileMenuOpen}
+										color='inherit'
+									>
+										<AccountCircle />{' '}
+										<span className='link-active'>Ericky Vand</span>
+									</IconButton>
+								</div>
+							) : (
+								<div>
+									<IconButton color='inherit'>
+										<NavLink
+											to='/signup'
+											className='link-active'
+											activeClassName='active'
+										>
+											Signup
+										</NavLink>
+									</IconButton>
+									<IconButton color='inherit'>
+										<NavLink
+											to='/login'
+											className='link-active'
+											activeClassName='active'
+										>
+											Login
+										</NavLink>
+									</IconButton>
+								</div>
+							)}
 						</div>
 						<div className={classes.sectionMobile}>
 							<IconButton

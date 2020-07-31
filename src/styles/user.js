@@ -27,6 +27,7 @@ const useStyles = makeStyles(theme => ({
 	avatarLarge: {
 		width: theme.spacing(7),
 		height: theme.spacing(7),
+		cursor: 'pointer',
 	},
 }));
 
