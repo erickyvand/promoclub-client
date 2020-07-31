@@ -24,6 +24,10 @@ const useStyles = makeStyles(theme => ({
 			backgroundColor: fade('#4791db', 0.8),
 		},
 	},
+	avatarLarge: {
+		width: theme.spacing(7),
+		height: theme.spacing(7),
+	},
 }));
 
 export default useStyles;
