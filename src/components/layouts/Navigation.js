@@ -8,6 +8,7 @@ import {
 	MenuItem,
 	Menu,
 	Container,
+	Avatar,
 } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
@@ -17,11 +18,13 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Redirect, useHistory } from 'react-router-dom';
 import useStyles from '../../styles/Layouts';
 
 const Navigation = () => {
 	const classes = useStyles();
+	const history = useHistory();
+
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
@@ -45,6 +48,35 @@ const Navigation = () => {
 		setMobileMoreAnchorEl(event.currentTarget);
 	};
 
+	const handleHome = () => {
+		setAnchorEl(null);
+		handleMobileMenuClose();
+		history.push('/');
+	};
+
+	const handleSignup = () => {
+		setAnchorEl(null);
+		handleMobileMenuClose();
+		history.push('/signup');
+	};
+
+	const handleLogin = () => {
+		setAnchorEl(null);
+		handleMobileMenuClose();
+		history.push('/login');
+	};
+
+	const handleLogout = () => {
+		sessionStorage.removeItem('id');
+		sessionStorage.removeItem('firstName');
+		sessionStorage.removeItem('lastName');
+		sessionStorage.removeItem('role');
+		sessionStorage.removeItem('token');
+		setAnchorEl(null);
+		handleMobileMenuClose();
+		location.href = '/login';
+	};
+
 	const menuId = 'primary-search-account-menu';
 	const renderMenu = (
 		<Menu
@@ -58,6 +90,7 @@ const Navigation = () => {
 		>
 			<MenuItem onClick={handleMenuClose}>Profile</MenuItem>
 			<MenuItem onClick={handleMenuClose}>My account</MenuItem>
+			<MenuItem onClick={handleLogout}>Logout</MenuItem>
 		</Menu>
 	);
 
@@ -95,24 +128,34 @@ const Navigation = () => {
 							aria-haspopup='true'
 							color='inherit'
 						>
-							<AccountCircle />
+							<Avatar src=''>
+								{sessionStorage.getItem('firstName').charAt(0)}
+							</Avatar>
 						</IconButton>
-						<p>Profile</p>
+						<p>{`${sessionStorage.getItem(
+							'firstName'
+						)} ${sessionStorage.getItem('lastName')}`}</p>
 					</MenuItem>
 				</div>
 			) : (
 				<div>
 					<MenuItem>
-						<IconButton color='inherit'>
-							<VpnKeyIcon />
+						<IconButton onClick={handleHome} color='inherit'>
+							<HomeIcon />
 						</IconButton>
-						<p>Signup</p>
+						<p onClick={handleHome}>Promoclub</p>
 					</MenuItem>
 					<MenuItem>
-						<IconButton color='inherit'>
+						<IconButton onClick={handleSignup} color='inherit'>
+							<VpnKeyIcon />
+						</IconButton>
+						<p onClick={handleSignup}>Signup</p>
+					</MenuItem>
+					<MenuItem>
+						<IconButton onClick={handleLogin} color='inherit'>
 							<LockOpenIcon />
 						</IconButton>
-						<p>Login</p>
+						<p onClick={handleLogin}>Login</p>
 					</MenuItem>
 				</div>
 			)}
@@ -176,8 +219,15 @@ const Navigation = () => {
 										onClick={handleProfileMenuOpen}
 										color='inherit'
 									>
-										<AccountCircle />{' '}
-										<span className='link-active'>Ericky Vand</span>
+										<Avatar src=''>
+											{sessionStorage.getItem('firstName').charAt(0)}
+										</Avatar>
+										&nbsp;
+										<span className='link-active'>
+											{`${sessionStorage.getItem(
+												'firstName'
+											)} ${sessionStorage.getItem('lastName')}`}
+										</span>
 									</IconButton>
 								</div>
 							) : (

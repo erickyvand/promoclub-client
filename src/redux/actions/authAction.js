@@ -1,5 +1,10 @@
-import { SIGNUP, LOGIN } from '../actionType';
-import { signupService, loginService } from '../../services/authService';
+import { SIGNUP, LOGIN, SEARCH_ACCOUNT, RESET_PASSWORD } from '../actionType';
+import {
+	signupService,
+	loginService,
+	searchAccountService,
+	resetPasswordService,
+} from '../../services/authService';
 
 export const signupAction = ({
 	firstName,
@@ -24,5 +29,19 @@ export const loginAction = ({ email, password }) => {
 	return {
 		type: LOGIN,
 		payload: loginService({ email, password }),
+	};
+};
+
+export const searchAccountAction = email => {
+	return {
+		type: SEARCH_ACCOUNT,
+		payload: searchAccountService(email),
+	};
+};
+
+export const resetPasswordAction = ({ password, confirmPassword }) => {
+	return {
+		type: RESET_PASSWORD,
+		payload: resetPasswordService({ password, confirmPassword }),
 	};
 };

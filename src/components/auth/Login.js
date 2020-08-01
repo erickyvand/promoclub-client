@@ -8,11 +8,18 @@ import {
 	Button,
 	Avatar,
 	Collapse,
+	FormControl,
+	InputLabel,
+	Input,
+	InputAdornment,
+	IconButton,
+	FormHelperText,
 } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
-import { Link, Redirect, withRouter } from 'react-router-dom';
-import * as yup from 'yup';
-import { Formik } from 'formik';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import { Link } from 'react-router-dom';
+import { Formik, Form } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginAction } from '../../redux/actions/authAction';
 import { loginSchema } from '../../validations/userValidation';
@@ -30,8 +37,15 @@ const Login = () => {
 	const dispatch = useDispatch();
 
 	const login = useSelector(state => state.login);
+	const resetPassword = useSelector(state => state.resetPassword);
 
 	const [open, setOpen] = useState(true);
+	const [unlock, setUnlock] = useState(true);
+	const [passwordShown, setPasswordShown] = useState(false);
+
+	const handleClickShowPassword = () => {
+		setPasswordShown(passwordShown ? false : true);
+	};
 
 	const handleLoginSubmit = values => {
 		dispatch(loginAction(values));
@@ -56,6 +70,7 @@ const Login = () => {
 
 	const handleClode = () => {
 		setOpen(false);
+		setUnlock(false);
 	};
 	return (
 		<div className={classes.root}>
@@ -69,6 +84,13 @@ const Login = () => {
 								</Alert>
 							)}
 						</Collapse>
+						<Collapse in={unlock}>
+							{resetPassword.message && (
+								<Alert severity='success' onClose={handleClode}>
+									{resetPassword.message && resetPassword.message}
+								</Alert>
+							)}
+						</Collapse>
 						<Typography variant='h6'>Login</Typography>
 						<Formik
 							validationSchema={loginSchema}
@@ -76,7 +98,7 @@ const Login = () => {
 							onSubmit={values => handleLoginSubmit(values)}
 						>
 							{props => (
-								<form onSubmit={props.handleSubmit} className={classes.form}>
+								<Form onSubmit={props.handleSubmit} className={classes.form}>
 									<TextField
 										variant='standard'
 										margin='normal'
@@ -97,28 +119,43 @@ const Login = () => {
 										}
 										helperText={props.values.email !== '' && props.errors.email}
 									/>
-									<TextField
-										variant='standard'
-										margin='normal'
-										fullWidth
-										size='small'
-										id='password'
-										label='Password'
-										name='password'
-										type='password'
-										value={props.values.password}
-										onChange={props.handleChange('password')}
-										error={
-											props.values.password !== '' &&
-											Object.prototype.hasOwnProperty.call(
-												props.errors,
-												'password'
-											)
-										}
-										helperText={
-											props.values.password !== '' && props.errors.password
-										}
-									/>
+									<FormControl fullWidth={true} margin='normal'>
+										<InputLabel htmlFor='password'>Password</InputLabel>
+										<Input
+											id='password'
+											name='password'
+											type={passwordShown ? 'text' : 'password'}
+											value={props.values.password}
+											onChange={props.handleChange('password')}
+											error={
+												props.values.password !== '' &&
+												Object.prototype.hasOwnProperty.call(
+													props.errors,
+													'password'
+												)
+											}
+											endAdornment={
+												<InputAdornment position='end'>
+													<IconButton
+														aria-label='toggle password visibility'
+														onClick={handleClickShowPassword}
+													>
+														{passwordShown ? (
+															<VisibilityOffIcon />
+														) : (
+															<VisibilityIcon />
+														)}
+													</IconButton>
+												</InputAdornment>
+											}
+										/>
+										<FormHelperText
+											children={
+												props.values.password !== '' && props.errors.password
+											}
+											className={classes.helperText}
+										/>
+									</FormControl>
 									<Button
 										type='submit'
 										variant='contained'
@@ -128,9 +165,19 @@ const Login = () => {
 									>
 										{login.loading ? 'Loading...' : 'Signup'}
 									</Button>
-								</form>
+								</Form>
 							)}
 						</Formik>
+						<Grid
+							container
+							direction='row'
+							justify='flex-end'
+							alignItems='flex-end'
+						>
+							<p>
+								<Link to='/search-account'>Forget Password</Link>
+							</p>
+						</Grid>
 						<p>Login with:</p>
 						<Grid
 							container
