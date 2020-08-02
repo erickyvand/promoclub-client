@@ -10,6 +10,8 @@ import PageNotFound from './components/layouts/PageNotFound';
 import store from './redux/store';
 import Feed from './components/posts/Feed';
 import Oauth from './components/auth/Oauth';
+import SearchAccount from './components/auth/SearchAccount';
+import ResetPassword from './components/auth/ResetPassword';
 
 const App = () => {
 	return (
@@ -23,6 +25,8 @@ const App = () => {
 						<Route path='/login' exact component={Login} />
 						<Route path='/oauth' exact component={Oauth} />
 						<Route path='/feed' exact component={Feed} />
+						<Route path='/search-account' exact component={SearchAccount} />
+						<Route path='/reset-password' exact component={ResetPassword} />
 						<Route exact component={PageNotFound} />
 					</Switch>
 				</div>

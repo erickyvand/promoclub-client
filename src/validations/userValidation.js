@@ -21,6 +21,20 @@ export const signupSchema = yup.object({
 });
 
 export const loginSchema = yup.object({
-	email: yup.string().email().required(),
+	email: yup.string().email('Email must be a valid email').required(),
 	password: yup.string().required(),
+});
+
+export const emailSchema = yup.object({
+	email: yup.string().email('Email must be a valid email').required(),
+});
+
+export const passwordSchema = yup.object({
+	password: yup
+		.string()
+		.min(6, 'Password must be at least 6 characters')
+		.required(),
+	confirmPassword: yup
+		.string()
+		.oneOf([yup.ref('password'), null], 'Passwords must match'),
 });

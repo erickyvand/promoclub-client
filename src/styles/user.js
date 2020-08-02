@@ -10,6 +10,9 @@ const useStyles = makeStyles(theme => ({
 	root: {
 		marginTop: 100,
 	},
+	rootReset: {
+		marginTop: 200,
+	},
 	form: {
 		width: '100%',
 		marginTop: theme.spacing(1),
@@ -28,6 +31,9 @@ const useStyles = makeStyles(theme => ({
 		width: theme.spacing(7),
 		height: theme.spacing(7),
 		cursor: 'pointer',
+	},
+	helperText: {
+		color: '#f44336',
 	},
 }));
 
