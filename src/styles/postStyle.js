@@ -41,6 +41,8 @@ const useStyles = makeStyles(theme => ({
 	videoPost: {
 		width: 'auto',
 		height: 300,
+		display: 'block',
+		margin: 'auto',
 		border: 'none',
 		cursor: 'pointer',
 	},
