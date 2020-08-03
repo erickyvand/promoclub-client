@@ -8,10 +8,10 @@ import Login from './components/auth/Login';
 import Landing from './components/layouts/Landing';
 import PageNotFound from './components/layouts/PageNotFound';
 import store from './redux/store';
-import Feed from './components/posts/Feed';
 import Oauth from './components/auth/Oauth';
 import SearchAccount from './components/auth/SearchAccount';
 import ResetPassword from './components/auth/ResetPassword';
+import Post from './components/posts/Post';
 
 const App = () => {
 	return (
@@ -24,7 +24,7 @@ const App = () => {
 						<Route path='/signup' exact component={Signup} />
 						<Route path='/login' exact component={Login} />
 						<Route path='/oauth' exact component={Oauth} />
-						<Route path='/feed' exact component={Feed} />
+						<Route path='/feed' exact component={Post} />
 						<Route path='/search-account' exact component={SearchAccount} />
 						<Route path='/reset-password' exact component={ResetPassword} />
 						<Route exact component={PageNotFound} />

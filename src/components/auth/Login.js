@@ -18,6 +18,7 @@ import {
 import Alert from '@material-ui/lab/Alert';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import CloseIcon from '@material-ui/icons/Close';
 import { Link } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
