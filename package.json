@@ -26,6 +26,7 @@
     "axios": "^0.19.2",
     "css-loader": "^4.0.0",
     "dotenv": "^8.2.0",
+    "emoji-mart": "^3.0.0",
     "file-loader": "^6.0.0",
     "formik": "^2.1.5",
     "jwt-decode": "^2.2.0",
@@ -39,6 +40,7 @@
     "redux-promise-middleware": "^6.1.2",
     "redux-thunk": "^2.3.0",
     "style-loader": "^1.2.1",
+    "video-react": "^0.14.1",
     "yup": "^0.29.2"
   },
   "devDependencies": {
