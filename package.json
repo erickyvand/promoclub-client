@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "webpack-dev-server": "webpack-dev-server",
-    "dev-server": "webpack-dev-server --mode=development --open",
+    "dev": "webpack-dev-server --mode=development --open",
     "prod": "webpack --mode=production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -30,10 +30,12 @@
     "file-loader": "^6.0.0",
     "formik": "^2.1.5",
     "jwt-decode": "^2.2.0",
+    "moment": "^2.27.0",
     "query-string": "^6.13.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-fade-in": "^1.1.0",
+    "react-linkify": "^1.0.0-alpha",
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
     "redux": "^4.0.5",

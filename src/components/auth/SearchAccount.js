@@ -27,7 +27,6 @@ const SearchAccount = () => {
 	const dispatch = useDispatch();
 
 	const searchAccount = useSelector(state => state.searchAccount);
-	console.log(searchAccount);
 
 	const [open, setOpen] = useState(true);
 
