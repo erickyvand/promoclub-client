@@ -46,7 +46,7 @@ const ResetPassword = () => {
 	};
 
 	const handleClickShowConfirmPassword = () => {
-		setConfirmPasswordShown(passwordShown ? false : true);
+		setConfirmPasswordShown(confirmPasswordShown ? false : true);
 	};
 
 	const handleSubmit = values => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import {
 	Card,
 	CardHeader,
@@ -16,11 +16,10 @@ import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import CommentIcon from '@material-ui/icons/Comment';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import useStyles from '../../styles/postStyle';
 import { viewPostsAction } from '../../redux/actions/postAction';
 import ReadMore from '../layouts/ReadMore';
-import { useRef } from 'react';
-import { useCallback } from 'react';
 
 const ViewPost = () => {
 	const classes = useStyles();
@@ -144,7 +143,11 @@ const ViewPost = () => {
 										<MoreVertIcon />
 									</IconButton>
 								}
-								title={`${post.User.firstName} ${post.User.lastName}`}
+								title={
+									<Link
+										to={`profile/${post.User.firstName}${post.User.lastName}${post.User.id}`.toLowerCase()}
+									>{`${post.User.firstName} ${post.User.lastName}`}</Link>
+								}
 								subheader={moment(post.createdAt).calendar({
 									sameDay: `[${moment(post.createdAt).fromNow()}]`,
 								})}

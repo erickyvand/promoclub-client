@@ -5,6 +5,7 @@ import searchAccountReducer from './reducers/auth/searchAccountReducer';
 import resetPasswordReducer from './reducers/auth/resetPasswordReducer';
 import postReducer from './reducers/posts/postReducer';
 import viewPostsReducer from './reducers/posts/viewPostsReducer';
+import profileReducer from './reducers/users/profileReducer';
 
 const rootReducer = combineReducers({
 	signup: signupReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
 	resetPassword: resetPasswordReducer,
 	postReducer,
 	viewPosts: viewPostsReducer,
+	profile: profileReducer,
 });
 
 export default rootReducer;

@@ -12,6 +12,7 @@ import Oauth from './components/auth/Oauth';
 import SearchAccount from './components/auth/SearchAccount';
 import ResetPassword from './components/auth/ResetPassword';
 import Post from './components/posts/Post';
+import Profile from './components/users/Profile';
 
 const App = () => {
 	return (
@@ -27,6 +28,7 @@ const App = () => {
 						<Route path='/feed' exact component={Post} />
 						<Route path='/search-account' exact component={SearchAccount} />
 						<Route path='/reset-password' exact component={ResetPassword} />
+						<Route path='/profile/:username' exact component={Profile} />
 						<Route exact component={PageNotFound} />
 					</Switch>
 				</div>

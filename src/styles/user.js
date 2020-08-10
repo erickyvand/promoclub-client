@@ -35,6 +35,23 @@ const useStyles = makeStyles(theme => ({
 	helperText: {
 		color: '#f44336',
 	},
+	// user profile
+	rootTab: {
+		flexGrow: 1,
+		backgroundColor: theme.palette.background.paper,
+		marginTop: 20,
+	},
+	cover: {
+		width: '100%',
+		height: 300,
+		backgroundColor: '#303840',
+	},
+	profileImage: {
+		width: 200,
+		height: 200,
+		borderRadius: 100,
+		margin: '-100px 0px 0px 50px',
+	},
 }));
 
 export default useStyles;
