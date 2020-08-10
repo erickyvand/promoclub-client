@@ -64,6 +64,7 @@ const Login = () => {
 		sessionStorage.setItem('id', login.data.user.id);
 		sessionStorage.setItem('firstName', login.data.user.firstName);
 		sessionStorage.setItem('lastName', login.data.user.lastName);
+		sessionStorage.setItem('profilePicture', login.data.user.profilePicture);
 		sessionStorage.setItem('role', login.data.user.role);
 		sessionStorage.setItem('token', login.data.token);
 		location.href = '/feed';

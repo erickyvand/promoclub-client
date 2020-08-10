@@ -6,3 +6,4 @@ export const RESET_PASSWORD = 'RESET_PASSWORD';
 export const POST = 'POST';
 export const VIEW_POSTS = 'VIEW_POSTS';
 export const PROFILE = 'PROFILE';
+export const EDIT_PROFILE = 'EDIT_PROFILE';

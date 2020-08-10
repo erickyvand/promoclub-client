@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
 	Grid,
 	Avatar,
@@ -11,14 +11,16 @@ import {
 	TableBody,
 	TableContainer,
 	Paper,
+	Collapse,
 } from '@material-ui/core';
 import moment from 'moment';
+import Skeleton from '@material-ui/lab/Skeleton';
+import { useDispatch, useSelector } from 'react-redux';
+import Alert from '@material-ui/lab/Alert';
 import TabPanel from '../layouts/TabPanel';
 import useStyles from '../../styles/user';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { profileAction } from '../../redux/actions/userAction';
-import Skeleton from '@material-ui/lab/Skeleton';
+import EditProfile from './EditProfile';
 
 const a11yProps = index => {
 	return {
@@ -31,24 +33,39 @@ const Profile = props => {
 	const userId = props.match.params.username.charAt(
 		props.match.params.username.length - 1
 	);
+
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
-	const [value, setValue] = useState(0);
-
 	const profile = useSelector(state => state.profile);
+	const successMessage = useSelector(state => state.editProfile.message);
+	const errorMessage = useSelector(state => state.editProfile.error);
+
+	const [value, setValue] = useState(0);
+	const [open, setOpen] = useState(true);
 
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
 	};
 
+	const handleClose = () => {
+		setOpen(false);
+	};
+
 	useEffect(() => {
 		dispatch(profileAction(userId));
-	}, []);
+	}, [userId, successMessage]);
 
 	return (
 		<div>
-			<Grid container direction='column'>
+			<Grid container direction='row'>
+				{errorMessage && (
+					<Collapse in={open}>
+						<Alert severity='error' onClose={handleClose}>
+							{errorMessage}
+						</Alert>
+					</Collapse>
+				)}
 				<Grid item xs={12} sm={12} md={12}>
 					<Avatar
 						variant='square'
@@ -56,7 +73,7 @@ const Profile = props => {
 						className={classes.cover}
 					/>
 				</Grid>
-				<Grid item xs={12} sm={12} md={12}>
+				<Grid item xs={12} sm={12} md={8}>
 					{profile.loading ? (
 						<Avatar>
 							<Skeleton
@@ -73,6 +90,9 @@ const Profile = props => {
 							className={classes.profileImage}
 						/>
 					)}
+				</Grid>
+				<Grid item xs={12} sm={12} md={4}>
+					<EditProfile userId={userId} profile={profile} />
 				</Grid>
 			</Grid>
 			<Grid container direction='row' spacing={2}>
@@ -139,7 +159,9 @@ const Profile = props => {
 										<TableCell>
 											{profile.data.dateOfBirth === null
 												? 'No Information'
-												: profile.data.dateOfBirth}
+												: moment(profile.data.dateOfBirth).format(
+														'Do MMM YYYY'
+												  )}
 										</TableCell>
 									</TableRow>
 									<TableRow>
