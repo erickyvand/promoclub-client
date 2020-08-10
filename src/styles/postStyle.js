@@ -5,8 +5,10 @@ const useStyles = makeStyles(theme => ({
 		marginTop: 80,
 	},
 	form: {
-		width: '100%',
+		width: '96%',
 		marginTop: theme.spacing(1),
+		marginBottom: theme.spacing(1),
+		margin: 'auto',
 	},
 	input: {
 		display: 'none',
@@ -27,6 +29,20 @@ const useStyles = makeStyles(theme => ({
 		'&:hover': {
 			backgroundColor: fade('#4791db', 0.8),
 		},
+	},
+	imagePost: {
+		width: 'auto',
+		height: 300,
+		display: 'block',
+		margin: 'auto',
+		border: 'none',
+		cursor: 'pointer',
+	},
+	videoPost: {
+		width: 'auto',
+		height: 300,
+		border: 'none',
+		cursor: 'pointer',
 	},
 }));
 

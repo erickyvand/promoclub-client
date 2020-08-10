@@ -1,28 +1,28 @@
 import { pending, fulfilled, rejected } from '../../../helpers/utils';
-import { POST } from '../../actionType';
+import { VIEW_POSTS } from '../../actionType';
 
 const initialState = {
 	message: '',
 	loading: false,
 	error: '',
-	data: {},
+	data: [],
 };
 
-const postReducer = (state = initialState, action) => {
+const viewPostsReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case pending(POST):
+		case pending(VIEW_POSTS):
 			return {
 				...state,
 				loading: true,
 			};
-		case fulfilled(POST):
+		case fulfilled(VIEW_POSTS):
 			return {
 				...state,
 				loading: false,
 				message: action.payload.data.message,
 				data: action.payload.data.data,
 			};
-		case rejected(POST):
+		case rejected():
 			return {
 				...state,
 				loading: false,
@@ -33,4 +33,4 @@ const postReducer = (state = initialState, action) => {
 	}
 };
 
-export default postReducer;
+export default viewPostsReducer;

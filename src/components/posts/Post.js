@@ -1,8 +1,7 @@
 import React, { useState, useRef, createRef } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import {
 	Grid,
-	Paper,
 	TextField,
 	IconButton,
 	Button,
@@ -11,6 +10,7 @@ import {
 	MenuList,
 	Typography,
 	Collapse,
+	Card,
 } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
@@ -20,6 +20,7 @@ import { Picker, Emoji } from 'emoji-mart';
 import useStyles from '../../styles/postStyle';
 import { useDispatch, useSelector } from 'react-redux';
 import { postAction } from '../../redux/actions/postAction';
+import ViewPost from './ViewPost';
 
 const validateFile = (file, setError) => {
 	if (
@@ -47,6 +48,7 @@ const Post = () => {
 
 	const classes = useStyles();
 	const dispatch = useDispatch();
+	const history = useHistory();
 
 	const postReducer = useSelector(state => state.postReducer);
 	const message = useSelector(state => state.postReducer.message);
@@ -118,8 +120,10 @@ const Post = () => {
 		dispatch(postAction(formData));
 
 		setPost();
-		setFile();
+		setFile('');
 		setIcon();
+
+		history.push('/feed');
 	};
 
 	// return focus to the button when we transitioned from !open -> open
@@ -134,126 +138,133 @@ const Post = () => {
 
 	return (
 		<div className={classes.root}>
-			<Grid container direction='row' spacing={2}>
+			<Grid container direction='row' spacing={1}>
 				<Grid item xs={12} sm={12} md={3}>
 					profile
 				</Grid>
-				<Grid item xs={12} sm={12} md={6} component={Paper} elevation={6}>
-					<Collapse in={unlock}>
-						{postReducer.error && (
-							<Alert severity='error' onClose={closeErrMsg}>
-								{postReducer.error && postReducer.error}
-							</Alert>
-						)}
-					</Collapse>
-					<div className={classes.form}>
-						<TextField
-							id='post'
-							name='post'
-							label='Create Post'
-							placeholder={`What do you want to share ${sessionStorage.getItem(
-								'firstName'
-							)}?`}
-							rows={4}
-							multiline
-							fullWidth
-							value={post === undefined ? '' : post}
-							onChange={handleChange}
-						/>
-						<div>
-							{preview === 'i' ? (
-								<Grid
-									container
-									direction='row'
-									justify='flex-start'
-									alignItems='flex-start'
-								>
-									<Grid item xs={6} sm={6} md={6}>
-										<img src={file} className={classes.imgPreview} />
-									</Grid>
-									<Grid item xs={6} sm={6} md={6}>
-										<IconButton onClick={closePreviewFile}>{icon}</IconButton>
-									</Grid>
-								</Grid>
-							) : preview === 'v' ? (
-								<Grid
-									container
-									direction='row'
-									justify='flex-start'
-									alignItems='flex-start'
-								>
-									<Grid item xs={6} sm={6} md={6}>
-										<video src={file} className={classes.imgPreview} controls />
-									</Grid>
-									<Grid item xs={6} sm={6} md={6}>
-										<IconButton onClick={closePreviewFile}>{icon}</IconButton>
-									</Grid>
-								</Grid>
-							) : (
-								''
+				<Grid item xs={12} sm={12} md={6}>
+					<Card>
+						<Collapse in={unlock}>
+							{postReducer.error && (
+								<Alert severity='error' onClose={closeErrMsg}>
+									{postReducer.error && postReducer.error}
+								</Alert>
 							)}
-						</div>
-						<Typography color='error'>{error && error}</Typography>
-						<Grid container direction='row' justify='center'>
-							<Grid item>
-								<input
-									accept='image/*|video/*'
-									className={classes.input}
-									id='mediaFile'
-									name='mediaFile'
-									ref={fileInput}
-									type='file'
-									onChange={previewImage}
-								/>
-								<label htmlFor='mediaFile'>
-									<IconButton
-										color='primary'
-										aria-label='upload picture'
-										component='span'
-										title='Upload'
+						</Collapse>
+						<div className={classes.form}>
+							<TextField
+								id='post'
+								name='post'
+								label='Create Post'
+								placeholder={`What do you want to share ${sessionStorage.getItem(
+									'firstName'
+								)}?`}
+								rows={4}
+								multiline
+								fullWidth
+								value={post === undefined ? '' : post}
+								onChange={handleChange}
+							/>
+							<div>
+								{preview === 'i' ? (
+									<Grid
+										container
+										direction='row'
+										justify='flex-start'
+										alignItems='flex-start'
 									>
-										<PhotoCamera />
-									</IconButton>
-								</label>
-							</Grid>
-							<Grid item>
-								<IconButton
-									title='Insert an emoji'
-									ref={anchorRef}
-									onClick={handleToggle}
-								>
-									<Emoji emoji={{ id: 'smiley', skin: 3 }} size={22} />
-								</IconButton>
-								<Popper open={open} anchorEl={anchorRef.current}>
-									<ClickAwayListener onClickAway={handleClose}>
-										<MenuList
-											style={{ float: 'right' }}
-											autoFocusItem={open}
-											id='menu-list-grow'
+										<Grid item xs={6} sm={6} md={6}>
+											<img src={file} className={classes.imgPreview} />
+										</Grid>
+										<Grid item xs={6} sm={6} md={6}>
+											<IconButton onClick={closePreviewFile}>{icon}</IconButton>
+										</Grid>
+									</Grid>
+								) : preview === 'v' ? (
+									<Grid
+										container
+										direction='row'
+										justify='flex-start'
+										alignItems='flex-start'
+									>
+										<Grid item xs={6} sm={6} md={6}>
+											<video
+												src={file}
+												className={classes.imgPreview}
+												controls
+											/>
+										</Grid>
+										<Grid item xs={6} sm={6} md={6}>
+											<IconButton onClick={closePreviewFile}>{icon}</IconButton>
+										</Grid>
+									</Grid>
+								) : (
+									''
+								)}
+							</div>
+							<Typography color='error'>{error && error}</Typography>
+							<Grid container direction='row' justify='center'>
+								<Grid item>
+									<input
+										accept='image/*|video/*'
+										className={classes.input}
+										id='mediaFile'
+										name='mediaFile'
+										ref={fileInput}
+										type='file'
+										onChange={previewImage}
+									/>
+									<label htmlFor='mediaFile'>
+										<IconButton
+											color='primary'
+											aria-label='upload picture'
+											component='span'
+											title='Upload'
 										>
-											<Picker onSelect={addEmoji} />
-										</MenuList>
-									</ClickAwayListener>
-								</Popper>
+											<PhotoCamera />
+										</IconButton>
+									</label>
+								</Grid>
+								<Grid item>
+									<IconButton
+										title='Insert an emoji'
+										ref={anchorRef}
+										onClick={handleToggle}
+									>
+										<Emoji emoji={{ id: 'smiley', skin: 3 }} size={22} />
+									</IconButton>
+									<Popper open={open} anchorEl={anchorRef.current}>
+										<ClickAwayListener onClickAway={handleClose}>
+											<MenuList
+												style={{ float: 'right' }}
+												autoFocusItem={open}
+												id='menu-list-grow'
+											>
+												<Picker onSelect={addEmoji} />
+											</MenuList>
+										</ClickAwayListener>
+									</Popper>
+								</Grid>
 							</Grid>
-						</Grid>
-						<Grid container direction='row' justify='flex-end'>
-							<Grid item>
-								<Button
-									type='submit'
-									variant='contained'
-									fullWidth
-									disabled={
-										(!post && (!file || error !== '')) || postReducer.loading
-									}
-									className={classes.submit}
-									onClick={handleClick}
-								>
-									{postReducer.loading ? 'Loading...' : 'Post'}
-								</Button>
+							<Grid container direction='row' justify='flex-end'>
+								<Grid item>
+									<Button
+										type='submit'
+										variant='contained'
+										fullWidth
+										disabled={
+											(!post && (!file || error !== '')) || postReducer.loading
+										}
+										className={classes.submit}
+										onClick={handleClick}
+									>
+										{postReducer.loading ? 'Loading...' : 'Post'}
+									</Button>
+								</Grid>
 							</Grid>
-						</Grid>
-					</div>
+						</div>
+					</Card>
+					<ViewPost />
 				</Grid>
 				<Grid item xs={12} sm={12} md={3}>
 					footer
