@@ -145,7 +145,7 @@ const ViewPost = () => {
 								}
 								title={
 									<Link
-										to={`profile/${post.User.firstName}${post.User.lastName}${post.User.id}`.toLowerCase()}
+										to={`/${post.User.firstName}${post.User.lastName}${post.User.id}`.toLowerCase()}
 									>{`${post.User.firstName} ${post.User.lastName}`}</Link>
 								}
 								subheader={moment(post.createdAt).calendar({

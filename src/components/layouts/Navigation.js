@@ -60,6 +60,16 @@ const Navigation = () => {
 		history.push('/signup');
 	};
 
+	const handleAccount = () => {
+		setAnchorEl(null);
+		handleMobileMenuClose();
+		history.push(
+			`/${sessionStorage.getItem('firstName')}${sessionStorage.getItem(
+				'lastName'
+			)}${sessionStorage.getItem('id')}`.toLowerCase()
+		);
+	};
+
 	const handleLogin = () => {
 		setAnchorEl(null);
 		handleMobileMenuClose();
@@ -70,6 +80,7 @@ const Navigation = () => {
 		sessionStorage.removeItem('id');
 		sessionStorage.removeItem('firstName');
 		sessionStorage.removeItem('lastName');
+		sessionStorage.removeItem('profilePicture');
 		sessionStorage.removeItem('role');
 		sessionStorage.removeItem('token');
 		setAnchorEl(null);
@@ -88,8 +99,7 @@ const Navigation = () => {
 			open={isMenuOpen}
 			onClose={handleMenuClose}
 		>
-			<MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-			<MenuItem onClick={handleMenuClose}>My account</MenuItem>
+			<MenuItem onClick={handleAccount}>My account</MenuItem>
 			<MenuItem onClick={handleLogout}>Logout</MenuItem>
 		</Menu>
 	);
@@ -128,7 +138,11 @@ const Navigation = () => {
 							aria-haspopup='true'
 							color='inherit'
 						>
-							<Avatar src=''>
+							<Avatar
+								src={`${process.env.API_URL}/${sessionStorage.getItem(
+									'profilePicture'
+								)}`}
+							>
 								{sessionStorage.getItem('firstName').charAt(0)}
 							</Avatar>
 						</IconButton>
@@ -219,7 +233,11 @@ const Navigation = () => {
 										onClick={handleProfileMenuOpen}
 										color='inherit'
 									>
-										<Avatar src=''>
+										<Avatar
+											src={`${process.env.API_URL}/${sessionStorage.getItem(
+												'profilePicture'
+											)}`}
+										>
 											{sessionStorage.getItem('firstName').charAt(0)}
 										</Avatar>
 										&nbsp;

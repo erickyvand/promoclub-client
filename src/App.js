@@ -28,7 +28,12 @@ const App = () => {
 						<Route path='/feed' exact component={Post} />
 						<Route path='/search-account' exact component={SearchAccount} />
 						<Route path='/reset-password' exact component={ResetPassword} />
-						<Route path='/profile/:username' exact component={Profile} />
+						<Route path='/:username' exact component={Profile} />
+						<Route
+							path='/:username/profile/edit/:userId'
+							exact
+							component={Profile}
+						/>
 						<Route exact component={PageNotFound} />
 					</Switch>
 				</div>

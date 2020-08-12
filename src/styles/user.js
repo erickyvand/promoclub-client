@@ -52,6 +52,23 @@ const useStyles = makeStyles(theme => ({
 		borderRadius: 100,
 		margin: '-100px 0px 0px 50px',
 	},
+	input: {
+		display: 'none',
+		margin: 5,
+	},
+	camera: {
+		position: 'absolute',
+		top: 155,
+		left: 75,
+		display: 'block',
+		cursor: 'pointer',
+	},
+	avatarEditProfile: {
+		width: 150,
+		height: 150,
+		border: '1px solid grey',
+		position: 'relative',
+	},
 }));
 
 export default useStyles;
