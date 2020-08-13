@@ -54,6 +54,12 @@ const Navigation = () => {
 		history.push('/');
 	};
 
+	const handleFeed = () => {
+		setAnchorEl(null);
+		handleMobileMenuClose();
+		history.push('/feed');
+	};
+
 	const handleSignup = () => {
 		setAnchorEl(null);
 		handleMobileMenuClose();
@@ -118,10 +124,10 @@ const Navigation = () => {
 			{sessionStorage.getItem('id') ? (
 				<div>
 					<MenuItem>
-						<IconButton color='inherit'>
+						<IconButton color='inherit' onClick={handleFeed}>
 							<HomeIcon />
 						</IconButton>
-						<p>Home</p>
+						<p onClick={handleFeed}>Feed</p>
 					</MenuItem>
 					<MenuItem>
 						<IconButton aria-label='show 11 new notifications' color='inherit'>

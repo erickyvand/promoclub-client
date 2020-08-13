@@ -37,6 +37,7 @@ const ViewPost = () => {
 		postLength = viewPosts.data.rows.length;
 	}
 
+	// infinite scroll
 	const observer = useRef();
 	const lastElement = useCallback(node => {
 		if (observer.current) observer.current.disconnect();
@@ -132,11 +133,15 @@ const ViewPost = () => {
 						<Card ref={lastElement} key={post.id} style={{ marginBottom: 10 }}>
 							<CardHeader
 								avatar={
-									<Avatar
-										src={`${process.env.API_URL}/${post.User.profilePicture}`}
+									<Link
+										to={`/${post.User.firstName}${post.User.lastName}${post.User.id}`.toLowerCase()}
 									>
-										{post.User.firstName.charAt(0)}
-									</Avatar>
+										<Avatar
+											src={`${process.env.API_URL}/${post.User.profilePicture}`}
+										>
+											{post.User.firstName.charAt(0)}
+										</Avatar>
+									</Link>
 								}
 								action={
 									<IconButton aria-label='settings'>
@@ -146,10 +151,14 @@ const ViewPost = () => {
 								title={
 									<Link
 										to={`/${post.User.firstName}${post.User.lastName}${post.User.id}`.toLowerCase()}
+										className={classes.nameTitle}
 									>{`${post.User.firstName} ${post.User.lastName}`}</Link>
 								}
 								subheader={moment(post.createdAt).calendar({
 									sameDay: `[${moment(post.createdAt).fromNow()}]`,
+									sameElse: `[${moment(post.createdAt).format(
+										'Do MMMM YYYY'
+									)}]`,
 								})}
 							/>
 							<CardContent>
@@ -215,7 +224,7 @@ const ViewPost = () => {
 						</Card>
 				  ))}
 			{viewPosts.loading && (
-				<CircularProgress style={{ display: 'block', margin: 'auto' }} />
+				<CircularProgress className={classes.circularProgress} />
 			)}
 		</div>
 	);
