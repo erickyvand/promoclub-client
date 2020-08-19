@@ -21,6 +21,8 @@ import TabPanel from '../layouts/TabPanel';
 import useStyles from '../../styles/user';
 import { profileAction } from '../../redux/actions/userAction';
 import EditProfile from './EditProfile';
+import OwnPosts from '../posts/OwnPosts';
+import PostMedia from '../posts/PostMedia';
 
 const a11yProps = index => {
 	return {
@@ -30,9 +32,8 @@ const a11yProps = index => {
 };
 
 const Profile = props => {
-	const userId = props.match.params.username.charAt(
-		props.match.params.username.length - 1
-	);
+	const username = props.match.params.username;
+	const userId = username.replace(/[^\d.]/g, '');
 
 	const classes = useStyles();
 	const dispatch = useDispatch();
@@ -79,8 +80,7 @@ const Profile = props => {
 							<Skeleton
 								animation='wave'
 								variant='circle'
-								width={200}
-								height={200}
+								className={classes.profileImage}
 							/>
 						</Avatar>
 					) : (
@@ -194,14 +194,14 @@ const Profile = props => {
 								aria-label='simple tabs example'
 							>
 								<Tab label='Photos/Videos' {...a11yProps(0)} />
-								<Tab label='My Posts' {...a11yProps(1)} />
+								<Tab label='Posts' {...a11yProps(1)} />
 							</Tabs>
 						</AppBar>
 						<TabPanel value={value} index={0}>
-							Item Two
+							<PostMedia userId={userId} />
 						</TabPanel>
 						<TabPanel value={value} index={1}>
-							Item Three
+							<OwnPosts userId={userId} />
 						</TabPanel>
 					</div>
 				</Grid>

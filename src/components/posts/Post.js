@@ -64,6 +64,7 @@ const Post = () => {
 	const anchorRef = useRef(null);
 	const fileInput = createRef();
 
+	// preview and read file
 	const previewImage = event => {
 		setMediaFile(event.target.files[0]);
 		setIcon(<CloseIcon />);
@@ -139,8 +140,8 @@ const Post = () => {
 	return (
 		<div className={classes.root}>
 			<Grid container direction='row' spacing={1}>
-				<Grid item xs={12} sm={12} md={3}>
-					profile
+				<Grid item md={3}>
+					<span style={{ position: 'fixed' }}>profile</span>
 				</Grid>
 				<Grid item xs={12} sm={12} md={6}>
 					<Card>

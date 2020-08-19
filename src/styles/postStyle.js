@@ -46,6 +46,27 @@ const useStyles = makeStyles(theme => ({
 		border: 'none',
 		cursor: 'pointer',
 	},
+	nameTitle: {
+		textDecoration: 'none',
+		color: '#0a0a0a',
+		fontWeight: 'bold',
+	},
+	rootMedia: {
+		display: 'flex',
+		flexWrap: 'wrap',
+		justifyContent: 'space-around',
+		overflow: 'hidden',
+		backgroundColor: theme.palette.background.paper,
+	},
+	noPostMessage: {
+		fontSize: '1.2em',
+		display: 'block',
+		textAlign: 'center',
+	},
+	circularProgress: {
+		display: 'block',
+		margin: 'auto',
+	},
 }));
 
 export default useStyles;
