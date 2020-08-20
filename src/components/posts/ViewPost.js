@@ -8,6 +8,7 @@ import {
 	IconButton,
 	Typography,
 	CircularProgress,
+	Tooltip,
 } from '@material-ui/core';
 import moment from 'moment';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -20,17 +21,20 @@ import { Link } from 'react-router-dom';
 import useStyles from '../../styles/postStyle';
 import { viewPostsAction } from '../../redux/actions/postAction';
 import ReadMore from '../layouts/ReadMore';
+import Comment from './Comment';
 
 const ViewPost = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
-	const [page] = useState(1);
-	const [limit, setLimit] = useState(10);
-
 	const viewPosts = useSelector(state => state.viewPosts);
 	const message = useSelector(state => state.viewPostsmessage);
 	const postMessage = useSelector(state => state.postReducer.message);
+
+	const [page] = useState(1);
+	const [limit, setLimit] = useState(10);
+	const [visible, setVisible] = useState(false);
+	const [postId, setPostId] = useState();
 
 	let postLength;
 	if (viewPosts.data.rows !== undefined) {
@@ -49,147 +53,152 @@ const ViewPost = () => {
 		if (node) observer.current.observe(node);
 	});
 
+	const handleComment = id => {
+		setPostId(id);
+		setVisible(true);
+	};
+
 	useEffect(() => {
 		dispatch(viewPostsAction(page, limit));
 	}, [message, postMessage, limit]);
 
 	return (
 		<div style={{ marginTop: 35 }}>
-			{viewPosts.data.length === 0
-				? [...new Array(5)].map((value, index) => (
-						<Card key={index} style={{ marginBottom: 10 }}>
-							<CardHeader
-								avatar={
-									<Avatar>
-										<Skeleton
-											animation='wave'
-											variant='circle'
-											width={50}
-											height={50}
-										/>
-									</Avatar>
-								}
-								action={
-									<IconButton aria-label='settings'>
-										<Skeleton
-											animation='wave'
-											variant='circle'
-											width={50}
-											height={50}
-										/>
-									</IconButton>
-								}
-								title={<Skeleton animation='wave' variant='text' width='80%' />}
-								subheader={
-									<Skeleton animation='wave' variant='text' width='50%' />
-								}
+			{viewPosts.data.length === 0 ? (
+				[...new Array(5)].map((value, index) => (
+					<Card key={index} style={{ marginBottom: 10 }}>
+						<CardHeader
+							avatar={
+								<Avatar>
+									<Skeleton
+										animation='wave'
+										variant='circle'
+										width={50}
+										height={50}
+									/>
+								</Avatar>
+							}
+							action={
+								<IconButton aria-label='settings'>
+									<Skeleton
+										animation='wave'
+										variant='circle'
+										width={50}
+										height={50}
+									/>
+								</IconButton>
+							}
+							title={<Skeleton animation='wave' variant='text' width='80%' />}
+							subheader={
+								<Skeleton animation='wave' variant='text' width='50%' />
+							}
+						/>
+						<CardContent>
+							<Typography variant='subtitle2' component='p'>
+								{<Skeleton animation='wave' variant='text' width='100%' />}
+								{<Skeleton animation='wave' variant='text' width='100%' />}
+								{<Skeleton animation='wave' variant='text' width='100%' />}
+							</Typography>
+						</CardContent>
+						<CardContent>
+							<Skeleton
+								animation='wave'
+								variant='rect'
+								width='100%'
+								height={150}
 							/>
-							<CardContent>
-								<Typography variant='subtitle2' component='p'>
-									{<Skeleton animation='wave' variant='text' width='100%' />}
-									{<Skeleton animation='wave' variant='text' width='100%' />}
-									{<Skeleton animation='wave' variant='text' width='100%' />}
-								</Typography>
-							</CardContent>
-							<CardContent>
+						</CardContent>
+						<CardActions disableSpacing>
+							<IconButton aria-label='like'>
 								<Skeleton
 									animation='wave'
-									variant='rect'
-									width='100%'
-									height={150}
+									variant='circle'
+									width={50}
+									height={50}
 								/>
-							</CardContent>
-							<CardActions disableSpacing>
-								<IconButton aria-label='like'>
-									<Skeleton
-										animation='wave'
-										variant='circle'
-										width={50}
-										height={50}
-									/>
-								</IconButton>
-								<IconButton aria-label='dislike'>
-									<Skeleton
-										animation='wave'
-										variant='circle'
-										width={50}
-										height={50}
-									/>
-								</IconButton>
-								<IconButton aria-label='comment'>
-									<Skeleton
-										animation='wave'
-										variant='circle'
-										width={50}
-										height={50}
-									/>
-								</IconButton>
-							</CardActions>
-						</Card>
-				  ))
-				: viewPosts.data.rows === 0
-				? 'No post to show'
-				: viewPosts.data.rows.map(post => (
-						<Card ref={lastElement} key={post.id} style={{ marginBottom: 10 }}>
-							<CardHeader
-								avatar={
-									<Link
-										to={`/${post.User.firstName}${post.User.lastName}${post.User.id}`.toLowerCase()}
+							</IconButton>
+							<IconButton aria-label='dislike'>
+								<Skeleton
+									animation='wave'
+									variant='circle'
+									width={50}
+									height={50}
+								/>
+							</IconButton>
+							<IconButton aria-label='comment'>
+								<Skeleton
+									animation='wave'
+									variant='circle'
+									width={50}
+									height={50}
+								/>
+							</IconButton>
+						</CardActions>
+					</Card>
+				))
+			) : viewPosts.data.rows.length === 0 ? (
+				<span className={classes.noPostMessage}>No post to show</span>
+			) : (
+				viewPosts.data.rows.map(post => (
+					<Card ref={lastElement} key={post.id} style={{ marginBottom: 10 }}>
+						<CardHeader
+							avatar={
+								<Link
+									to={`/${post.User.firstName}${post.User.lastName}${post.User.id}`.toLowerCase()}
+								>
+									<Avatar
+										src={`${process.env.API_URL}/${post.User.profilePicture}`}
 									>
-										<Avatar
-											src={`${process.env.API_URL}/${post.User.profilePicture}`}
-										>
-											{post.User.firstName.charAt(0)}
-										</Avatar>
-									</Link>
-								}
-								action={
-									<IconButton aria-label='settings'>
-										<MoreVertIcon />
-									</IconButton>
-								}
-								title={
-									<Link
-										to={`/${post.User.firstName}${post.User.lastName}${post.User.id}`.toLowerCase()}
-										className={classes.nameTitle}
-									>{`${post.User.firstName} ${post.User.lastName}`}</Link>
-								}
-								subheader={moment(post.createdAt).calendar({
-									sameDay: `[${moment(post.createdAt).fromNow()}]`,
-									sameElse: `[${moment(post.createdAt).format(
-										'Do MMMM YYYY'
-									)}]`,
-								})}
+										{post.User.firstName.charAt(0)}
+									</Avatar>
+								</Link>
+							}
+							action={
+								<IconButton aria-label='settings'>
+									<MoreVertIcon />
+								</IconButton>
+							}
+							title={
+								<Link
+									to={`/${post.User.firstName}${post.User.lastName}${post.User.id}`.toLowerCase()}
+									className={classes.nameTitle}
+								>{`${post.User.firstName} ${post.User.lastName}`}</Link>
+							}
+							subheader={moment(post.createdAt).calendar({
+								sameDay: `[${moment(post.createdAt).fromNow()}]`,
+								sameElse: `[${moment(post.createdAt).format('Do MMMM YYYY')}]`,
+							})}
+						/>
+						<CardContent>
+							<Typography variant='subtitle2' component='div'>
+								{post.post === 'undefined' ? (
+									''
+								) : (
+									<ReadMore text={post.post} maxShowCharacter={200} />
+								)}
+							</Typography>
+						</CardContent>
+						{post.fileType === 'image/jpg' ||
+						post.fileType === 'image/jpeg' ||
+						post.fileType === 'image/png' ||
+						post.fileType === 'image/gif' ? (
+							<img
+								src={`${process.env.API_URL}/${post.mediaFile}`}
+								alt=''
+								className={classes.imagePost}
 							/>
-							<CardContent>
-								<Typography variant='subtitle2' component='div'>
-									{post.post === 'undefined' ? (
-										''
-									) : (
-										<ReadMore text={post.post} maxShowCharacter={200} />
-									)}
-								</Typography>
-							</CardContent>
-							{post.fileType === 'image/jpg' ||
-							post.fileType === 'image/jpeg' ||
-							post.fileType === 'image/png' ||
-							post.fileType === 'image/gif' ? (
-								<img
-									src={`${process.env.API_URL}/${post.mediaFile}`}
-									alt=''
-									className={classes.imagePost}
-								/>
-							) : post.fileType === 'video/mp4' ||
-							  post.fileType === 'video/x-m4v' ? (
-								<video
-									src={`${process.env.API_URL}/${post.mediaFile}`}
-									controls
-									className={classes.videoPost}
-								/>
-							) : (
-								''
-							)}
-							<CardActions disableSpacing>
+						) : post.fileType === 'video/mp4' ||
+						  post.fileType === 'video/x-m4v' ? (
+							<video
+								src={`${process.env.API_URL}/${post.mediaFile}`}
+								controls
+								className={classes.videoPost}
+							/>
+						) : (
+							''
+						)}
+						<CardActions disableSpacing>
+							<Tooltip title='Like' placement='bottom'>
 								<IconButton aria-label='like'>
 									<ThumbUpIcon /> &nbsp;
 									<Typography
@@ -200,6 +209,8 @@ const ViewPost = () => {
 										12
 									</Typography>
 								</IconButton>
+							</Tooltip>
+							<Tooltip title='Dislike' placement='bottom'>
 								<IconButton aria-label='dislike'>
 									<ThumbDownIcon /> &nbsp;
 									<Typography
@@ -210,7 +221,12 @@ const ViewPost = () => {
 										1
 									</Typography>
 								</IconButton>
-								<IconButton aria-label='comment'>
+							</Tooltip>
+							<Tooltip title='Comment' placement='bottom'>
+								<IconButton
+									onClick={() => handleComment(post.id)}
+									aria-label='comment'
+								>
 									<CommentIcon /> &nbsp;
 									<Typography
 										variant='body2'
@@ -220,9 +236,14 @@ const ViewPost = () => {
 										136
 									</Typography>
 								</IconButton>
-							</CardActions>
-						</Card>
-				  ))}
+							</Tooltip>
+						</CardActions>
+						<CardActions>
+							{visible && postId === post.id ? <Comment postId={postId} /> : ''}
+						</CardActions>
+					</Card>
+				))
+			)}
 			{viewPosts.loading && (
 				<CircularProgress className={classes.circularProgress} />
 			)}

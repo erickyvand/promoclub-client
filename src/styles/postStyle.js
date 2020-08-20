@@ -48,8 +48,11 @@ const useStyles = makeStyles(theme => ({
 	},
 	nameTitle: {
 		textDecoration: 'none',
-		color: '#0a0a0a',
+		color: '#126eb0',
 		fontWeight: 'bold',
+		'&:hover': {
+			textDecoration: 'underline',
+		},
 	},
 	rootMedia: {
 		display: 'flex',
@@ -66,6 +69,36 @@ const useStyles = makeStyles(theme => ({
 	circularProgress: {
 		display: 'block',
 		margin: 'auto',
+	},
+	// Comments styles
+	commentRoot: {
+		width: '100%',
+	},
+	notchedOutline: {
+		borderWidth: '1px',
+		borderColor: 'lightgray !important',
+		borderRadius: 20,
+		position: 'absolute',
+	},
+	emoji: {
+		position: 'relative',
+		right: '50px',
+		bottom: '4px',
+	},
+	editComment: {
+		fontSize: '0.8em',
+		color: '#126eb0',
+		'&:hover': {
+			textDecoration: 'underline',
+		},
+	},
+	deleteComment: {
+		fontSize: '0.8em',
+		color: '#126eb0',
+		'&:hover': {
+			color: '#912b0c',
+			textDecoration: 'underline',
+		},
 	},
 }));
 

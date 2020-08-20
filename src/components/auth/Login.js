@@ -70,7 +70,7 @@ const Login = () => {
 		location.href = '/feed';
 	}
 
-	const handleClode = () => {
+	const handleClose = () => {
 		history.go();
 		setOpen(false);
 		setUnlock(false);
@@ -82,14 +82,14 @@ const Login = () => {
 					<div className={classes.paper}>
 						<Collapse in={open}>
 							{login.error && (
-								<Alert severity='error' onClose={handleClode}>
+								<Alert severity='error' onClose={handleClose}>
 									{login.error && login.error}
 								</Alert>
 							)}
 						</Collapse>
 						<Collapse in={unlock}>
 							{resetPassword.message && (
-								<Alert severity='success' onClose={handleClode}>
+								<Alert severity='success' onClose={handleClose}>
 									{resetPassword.message && resetPassword.message}
 								</Alert>
 							)}

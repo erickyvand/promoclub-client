@@ -8,6 +8,7 @@ import viewPostsReducer from './reducers/posts/viewPostsReducer';
 import profileReducer from './reducers/users/profileReducer';
 import editProfileReducer from './reducers/users/editProfileReducer';
 import viewOwnPotsReducer from './reducers/posts/ownPostsReducer';
+import commentReducer from './reducers/posts/commentReducer';
 
 const rootReducer = combineReducers({
 	signup: signupReducer,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
 	profile: profileReducer,
 	editProfile: editProfileReducer,
 	ownPosts: viewOwnPotsReducer,
+	comment: commentReducer,
 });
 
 export default rootReducer;
