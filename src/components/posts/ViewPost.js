@@ -19,7 +19,10 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import useStyles from '../../styles/postStyle';
-import { viewPostsAction } from '../../redux/actions/postAction';
+import {
+	viewPostsAction,
+	allCommentsAction,
+} from '../../redux/actions/postAction';
 import ReadMore from '../layouts/ReadMore';
 import Comment from './Comment';
 
@@ -30,6 +33,8 @@ const ViewPost = () => {
 	const viewPosts = useSelector(state => state.viewPosts);
 	const message = useSelector(state => state.viewPostsmessage);
 	const postMessage = useSelector(state => state.postReducer.message);
+	const allComments = useSelector(state => state.allComments);
+	const comments = [...allComments.data];
 
 	const [page] = useState(1);
 	const [limit, setLimit] = useState(10);
@@ -60,6 +65,7 @@ const ViewPost = () => {
 
 	useEffect(() => {
 		dispatch(viewPostsAction(page, limit));
+		dispatch(allCommentsAction());
 	}, [message, postMessage, limit]);
 
 	return (
@@ -139,110 +145,123 @@ const ViewPost = () => {
 			) : viewPosts.data.rows.length === 0 ? (
 				<span className={classes.noPostMessage}>No post to show</span>
 			) : (
-				viewPosts.data.rows.map(post => (
-					<Card ref={lastElement} key={post.id} style={{ marginBottom: 10 }}>
-						<CardHeader
-							avatar={
-								<Link
-									to={`/${post.User.firstName}${post.User.lastName}${post.User.id}`.toLowerCase()}
-								>
-									<Avatar
-										src={`${process.env.API_URL}/${post.User.profilePicture}`}
+				viewPosts.data.rows.map(post => {
+					const commentCount = comments.filter(c => c.postId === post.id);
+					return (
+						<Card ref={lastElement} key={post.id} style={{ marginBottom: 10 }}>
+							<CardHeader
+								avatar={
+									<Link
+										to={`/${post.User.firstName}${post.User.lastName}${post.User.id}`.toLowerCase()}
 									>
-										{post.User.firstName.charAt(0)}
-									</Avatar>
-								</Link>
-							}
-							action={
-								<IconButton aria-label='settings'>
-									<MoreVertIcon />
-								</IconButton>
-							}
-							title={
-								<Link
-									to={`/${post.User.firstName}${post.User.lastName}${post.User.id}`.toLowerCase()}
-									className={classes.nameTitle}
-								>{`${post.User.firstName} ${post.User.lastName}`}</Link>
-							}
-							subheader={moment(post.createdAt).calendar({
-								sameDay: `[${moment(post.createdAt).fromNow()}]`,
-								sameElse: `[${moment(post.createdAt).format('Do MMMM YYYY')}]`,
-							})}
-						/>
-						<CardContent>
-							<Typography variant='subtitle2' component='div'>
-								{post.post === 'undefined' ? (
-									''
+										<Avatar
+											src={`${process.env.API_URL}/${post.User.profilePicture}`}
+										>
+											{post.User.firstName.charAt(0)}
+										</Avatar>
+									</Link>
+								}
+								action={
+									<IconButton aria-label='settings'>
+										<MoreVertIcon />
+									</IconButton>
+								}
+								title={
+									<Link
+										to={`/${post.User.firstName}${post.User.lastName}${post.User.id}`.toLowerCase()}
+										className={classes.nameTitle}
+									>{`${post.User.firstName} ${post.User.lastName}`}</Link>
+								}
+								subheader={moment(post.createdAt).calendar({
+									sameDay: `[${moment(post.createdAt).fromNow()}]`,
+									sameElse: `[${moment(post.createdAt).format(
+										'Do MMMM YYYY'
+									)}]`,
+								})}
+							/>
+							<CardContent>
+								<Typography variant='subtitle2' component='div'>
+									{post.post === 'undefined' ? (
+										''
+									) : (
+										<ReadMore text={post.post} maxShowCharacter={200} />
+									)}
+								</Typography>
+							</CardContent>
+							{post.fileType === 'image/jpg' ||
+							post.fileType === 'image/jpeg' ||
+							post.fileType === 'image/png' ||
+							post.fileType === 'image/gif' ? (
+								<img
+									src={`${process.env.API_URL}/${post.mediaFile}`}
+									alt=''
+									className={classes.imagePost}
+								/>
+							) : post.fileType === 'video/mp4' ||
+							  post.fileType === 'video/x-m4v' ? (
+								<video
+									src={`${process.env.API_URL}/${post.mediaFile}`}
+									controls
+									className={classes.videoPost}
+								/>
+							) : (
+								''
+							)}
+							<CardActions disableSpacing>
+								<Tooltip title='Like' placement='bottom'>
+									<IconButton aria-label='like'>
+										<ThumbUpIcon /> &nbsp;
+										<Typography
+											variant='body2'
+											color='textSecondary'
+											component='p'
+										>
+											12
+										</Typography>
+									</IconButton>
+								</Tooltip>
+								<Tooltip title='Dislike' placement='bottom'>
+									<IconButton aria-label='dislike'>
+										<ThumbDownIcon /> &nbsp;
+										<Typography
+											variant='body2'
+											color='textSecondary'
+											component='p'
+										>
+											1
+										</Typography>
+									</IconButton>
+								</Tooltip>
+								<Tooltip title='Comment' placement='bottom'>
+									<IconButton
+										onClick={() => handleComment(post.id)}
+										aria-label='comment'
+									>
+										<CommentIcon /> &nbsp;
+										<Typography
+											variant='body2'
+											color='textSecondary'
+											component='p'
+										>
+											{commentCount.length === 0
+												? ''
+												: commentCount.length === 1
+												? `${commentCount.length} comment`
+												: `${commentCount.length} comments`}
+										</Typography>
+									</IconButton>
+								</Tooltip>
+							</CardActions>
+							<CardActions>
+								{visible && postId === post.id ? (
+									<Comment postId={postId} />
 								) : (
-									<ReadMore text={post.post} maxShowCharacter={200} />
+									''
 								)}
-							</Typography>
-						</CardContent>
-						{post.fileType === 'image/jpg' ||
-						post.fileType === 'image/jpeg' ||
-						post.fileType === 'image/png' ||
-						post.fileType === 'image/gif' ? (
-							<img
-								src={`${process.env.API_URL}/${post.mediaFile}`}
-								alt=''
-								className={classes.imagePost}
-							/>
-						) : post.fileType === 'video/mp4' ||
-						  post.fileType === 'video/x-m4v' ? (
-							<video
-								src={`${process.env.API_URL}/${post.mediaFile}`}
-								controls
-								className={classes.videoPost}
-							/>
-						) : (
-							''
-						)}
-						<CardActions disableSpacing>
-							<Tooltip title='Like' placement='bottom'>
-								<IconButton aria-label='like'>
-									<ThumbUpIcon /> &nbsp;
-									<Typography
-										variant='body2'
-										color='textSecondary'
-										component='p'
-									>
-										12
-									</Typography>
-								</IconButton>
-							</Tooltip>
-							<Tooltip title='Dislike' placement='bottom'>
-								<IconButton aria-label='dislike'>
-									<ThumbDownIcon /> &nbsp;
-									<Typography
-										variant='body2'
-										color='textSecondary'
-										component='p'
-									>
-										1
-									</Typography>
-								</IconButton>
-							</Tooltip>
-							<Tooltip title='Comment' placement='bottom'>
-								<IconButton
-									onClick={() => handleComment(post.id)}
-									aria-label='comment'
-								>
-									<CommentIcon /> &nbsp;
-									<Typography
-										variant='body2'
-										color='textSecondary'
-										component='p'
-									>
-										136
-									</Typography>
-								</IconButton>
-							</Tooltip>
-						</CardActions>
-						<CardActions>
-							{visible && postId === post.id ? <Comment postId={postId} /> : ''}
-						</CardActions>
-					</Card>
-				))
+							</CardActions>
+						</Card>
+					);
+				})
 			)}
 			{viewPosts.loading && (
 				<CircularProgress className={classes.circularProgress} />

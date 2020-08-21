@@ -17,17 +17,25 @@ import CommentIcon from '@material-ui/icons/Comment';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import ReadMore from '../layouts/ReadMore';
-import { viewOwnPostsAction } from '../../redux/actions/postAction';
+import {
+	viewOwnPostsAction,
+	allCommentsAction,
+} from '../../redux/actions/postAction';
 import useStyles from '../../styles/postStyle';
+import Comment from './Comment';
 
 const OwnPosts = ({ userId }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
 	const ownPosts = useSelector(state => state.ownPosts);
+	const allComments = useSelector(state => state.allComments);
+	const comments = [...allComments.data];
 
 	const [page] = useState(1);
 	const [limit, setLimit] = useState(5);
+	const [visible, setVisible] = useState(false);
+	const [postId, setPostId] = useState('');
 
 	let postLength;
 	if (ownPosts.data.rows !== undefined) {
@@ -45,8 +53,14 @@ const OwnPosts = ({ userId }) => {
 		if (node) observer.current.observe(node);
 	});
 
+	const handleComment = id => {
+		setPostId(id);
+		setVisible(true);
+	};
+
 	useEffect(() => {
 		dispatch(viewOwnPostsAction(userId, page, limit));
+		dispatch(allCommentsAction());
 	}, [limit, userId]);
 	return (
 		<div>
@@ -57,86 +71,117 @@ const OwnPosts = ({ userId }) => {
 					You have not created any post yet
 				</span>
 			) : (
-				ownPosts.data.rows.map(post => (
-					<Card ref={lastElement} key={post.id} style={{ marginBottom: 10 }}>
-						<CardHeader
-							avatar={
-								<Link
-									to={`/${post.User.firstName}${post.User.lastName}${post.User.id}`.toLowerCase()}
-								>
-									<Avatar
-										src={`${process.env.API_URL}/${post.User.profilePicture}`}
+				ownPosts.data.rows.map(post => {
+					const commentCount = comments.filter(c => c.postId === post.id);
+					return (
+						<Card ref={lastElement} key={post.id} style={{ marginBottom: 10 }}>
+							<CardHeader
+								avatar={
+									<Link
+										to={`/${post.User.firstName}${post.User.lastName}${post.User.id}`.toLowerCase()}
 									>
-										{post.User.firstName.charAt(0)}
-									</Avatar>
-								</Link>
-							}
-							action={
-								<IconButton aria-label='settings'>
-									<MoreVertIcon />
+										<Avatar
+											src={`${process.env.API_URL}/${post.User.profilePicture}`}
+										>
+											{post.User.firstName.charAt(0)}
+										</Avatar>
+									</Link>
+								}
+								action={
+									<IconButton aria-label='settings'>
+										<MoreVertIcon />
+									</IconButton>
+								}
+								title={
+									<Link
+										to={`/${post.User.firstName}${post.User.lastName}${post.User.id}`.toLowerCase()}
+										className={classes.nameTitle}
+									>{`${post.User.firstName} ${post.User.lastName}`}</Link>
+								}
+								subheader={moment(post.createdAt).calendar({
+									sameDay: `[${moment(post.createdAt).fromNow()}]`,
+									sameElse: `[${moment(post.createdAt).format(
+										'Do MMMM YYYY'
+									)}]`,
+								})}
+							/>
+							<CardContent>
+								<Typography variant='subtitle2' component='div'>
+									{post.post === 'undefined' ? (
+										''
+									) : (
+										<ReadMore text={post.post} maxShowCharacter={200} />
+									)}
+								</Typography>
+							</CardContent>
+							{post.fileType === 'image/jpg' ||
+							post.fileType === 'image/jpeg' ||
+							post.fileType === 'image/png' ||
+							post.fileType === 'image/gif' ? (
+								<img
+									src={`${process.env.API_URL}/${post.mediaFile}`}
+									alt=''
+									className={classes.imagePost}
+								/>
+							) : post.fileType === 'video/mp4' ||
+							  post.fileType === 'video/x-m4v' ? (
+								<video
+									src={`${process.env.API_URL}/${post.mediaFile}`}
+									controls
+									className={classes.videoPost}
+								/>
+							) : (
+								''
+							)}
+							<CardActions disableSpacing>
+								<IconButton aria-label='like'>
+									<ThumbUpIcon /> &nbsp;
+									<Typography
+										variant='body2'
+										color='textSecondary'
+										component='p'
+									>
+										12
+									</Typography>
 								</IconButton>
-							}
-							title={
-								<Link
-									to={`/${post.User.firstName}${post.User.lastName}${post.User.id}`.toLowerCase()}
-									className={classes.nameTitle}
-								>{`${post.User.firstName} ${post.User.lastName}`}</Link>
-							}
-							subheader={moment(post.createdAt).calendar({
-								sameDay: `[${moment(post.createdAt).fromNow()}]`,
-								sameElse: `[${moment(post.createdAt).format('Do MMMM YYYY')}]`,
-							})}
-						/>
-						<CardContent>
-							<Typography variant='subtitle2' component='div'>
-								{post.post === 'undefined' ? (
-									''
+								<IconButton aria-label='dislike'>
+									<ThumbDownIcon /> &nbsp;
+									<Typography
+										variant='body2'
+										color='textSecondary'
+										component='p'
+									>
+										1
+									</Typography>
+								</IconButton>
+								<IconButton
+									aria-label='comment'
+									onClick={() => handleComment(post.id)}
+								>
+									<CommentIcon /> &nbsp;
+									<Typography
+										variant='body2'
+										color='textSecondary'
+										component='p'
+									>
+										{commentCount.length === 0
+											? ''
+											: commentCount.length === 1
+											? `${commentCount.length} comment`
+											: `${commentCount.length} comments`}
+									</Typography>
+								</IconButton>
+							</CardActions>
+							<CardActions>
+								{visible && post.id === postId ? (
+									<Comment postId={postId} />
 								) : (
-									<ReadMore text={post.post} maxShowCharacter={200} />
+									''
 								)}
-							</Typography>
-						</CardContent>
-						{post.fileType === 'image/jpg' ||
-						post.fileType === 'image/jpeg' ||
-						post.fileType === 'image/png' ||
-						post.fileType === 'image/gif' ? (
-							<img
-								src={`${process.env.API_URL}/${post.mediaFile}`}
-								alt=''
-								className={classes.imagePost}
-							/>
-						) : post.fileType === 'video/mp4' ||
-						  post.fileType === 'video/x-m4v' ? (
-							<video
-								src={`${process.env.API_URL}/${post.mediaFile}`}
-								controls
-								className={classes.videoPost}
-							/>
-						) : (
-							''
-						)}
-						<CardActions disableSpacing>
-							<IconButton aria-label='like'>
-								<ThumbUpIcon /> &nbsp;
-								<Typography variant='body2' color='textSecondary' component='p'>
-									12
-								</Typography>
-							</IconButton>
-							<IconButton aria-label='dislike'>
-								<ThumbDownIcon /> &nbsp;
-								<Typography variant='body2' color='textSecondary' component='p'>
-									1
-								</Typography>
-							</IconButton>
-							<IconButton aria-label='comment'>
-								<CommentIcon /> &nbsp;
-								<Typography variant='body2' color='textSecondary' component='p'>
-									136
-								</Typography>
-							</IconButton>
-						</CardActions>
-					</Card>
-				))
+							</CardActions>
+						</Card>
+					);
+				})
 			)}
 			{ownPosts.loading && (
 				<CircularProgress className={classes.circularProgress} />

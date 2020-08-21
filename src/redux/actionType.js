@@ -9,3 +9,5 @@ export const PROFILE = 'PROFILE';
 export const EDIT_PROFILE = 'EDIT_PROFILE';
 export const OWN_POSTS = 'OWN_POSTS';
 export const COMMENT = 'COMMENT';
+export const VIEW_COMMENTS = 'VIEW_COMMENTS';
+export const ALL_COMMENTS = 'ALL_COMMENTS';

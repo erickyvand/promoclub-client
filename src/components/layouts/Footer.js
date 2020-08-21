@@ -3,7 +3,7 @@ import { Divider, Grid } from '@material-ui/core';
 
 const Footer = () => {
 	return (
-		<div style={{ marginTop: '110px' }}>
+		<div style={{ marginTop: 'auto' }}>
 			<Divider />
 			<Grid item xs={12} sm={12}>
 				<p style={{ textAlign: 'center' }}>
