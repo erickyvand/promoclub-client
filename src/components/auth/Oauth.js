@@ -10,8 +10,9 @@ const Oauth = () => {
 	sessionStorage.setItem('id', decoded.id);
 	sessionStorage.setItem('firstName', decoded.firstName);
 	sessionStorage.setItem('lastName', decoded.lastName);
+	sessionStorage.setItem('profilePicture', decoded.profilePicture);
 	sessionStorage.setItem('role', decoded.role);
-	sessionStorage.setItem('token', `Bearer ${token}`);
+	sessionStorage.setItem('token', token);
 	return <Redirect to='/feed' />;
 };
 
