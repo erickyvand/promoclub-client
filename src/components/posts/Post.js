@@ -11,16 +11,22 @@ import {
 	Typography,
 	Collapse,
 	Card,
+	Paper,
+	Avatar,
 } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
+import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import CloseIcon from '@material-ui/icons/Close';
+import EventIcon from '@material-ui/icons/Event';
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker, Emoji } from 'emoji-mart';
 import useStyles from '../../styles/postStyle';
-import { useDispatch, useSelector } from 'react-redux';
 import { postAction } from '../../redux/actions/postAction';
 import ViewPost from './ViewPost';
+import { profileAction } from '../../redux/actions/userAction';
+import SideFooter from '../layouts/SideFooter';
 
 const validateFile = (file, setError) => {
 	if (
@@ -52,6 +58,15 @@ const Post = () => {
 
 	const postReducer = useSelector(state => state.postReducer);
 	const message = useSelector(state => state.postReducer.message);
+	const profile = useSelector(state => state.profile);
+	const viewPosts = useSelector(state => state.viewPosts);
+
+	let posts;
+	if (viewPosts.data !== 0 && viewPosts.data.rows !== undefined) {
+		posts = viewPosts.data.rows.filter(
+			p => p.userId === parseInt(sessionStorage.getItem('id'))
+		);
+	}
 
 	const [file, setFile] = useState();
 	const [preview, setPreview] = useState();
@@ -135,13 +150,47 @@ const Post = () => {
 		}
 
 		prevOpen.current = open;
+
+		dispatch(profileAction(sessionStorage.getItem('id')));
 	}, [open, message]);
 
 	return (
-		<div className={classes.root}>
+		<div>
 			<Grid container direction='row' spacing={1}>
 				<Grid item md={3}>
-					<span style={{ position: 'fixed' }}>profile</span>
+					<div className='side-profile'>
+						<Paper elevation={6}>
+							<Grid
+								container
+								direction='column'
+								alignItems='center'
+								style={{ padding: 15 }}
+							>
+								<Grid item>
+									<Avatar
+										src={`${process.env.API_URL}/${profile.data.profilePicture}`}
+										style={{
+											width: 100,
+											height: 100,
+											border: '1px solid lightgray',
+										}}
+									></Avatar>
+								</Grid>
+								<Grid item>
+									<Typography>{posts && posts.length} posts</Typography>
+								</Grid>
+								<Grid item>
+									<IconButton>
+										<EventIcon />
+										<Typography>
+											Joined{' '}
+											{moment(profile.data.createdAt).format('MMMM Do YYYY')}
+										</Typography>
+									</IconButton>
+								</Grid>
+							</Grid>
+						</Paper>
+					</div>
 				</Grid>
 				<Grid item xs={12} sm={12} md={6}>
 					<Card>
@@ -268,7 +317,7 @@ const Post = () => {
 					<ViewPost />
 				</Grid>
 				<Grid item xs={12} sm={12} md={3}>
-					footer
+					<SideFooter />
 				</Grid>
 			</Grid>
 		</div>

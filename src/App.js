@@ -13,13 +13,14 @@ import SearchAccount from './components/auth/SearchAccount';
 import ResetPassword from './components/auth/ResetPassword';
 import Post from './components/posts/Post';
 import Profile from './components/users/Profile';
+import Footer from './components/layouts/Footer';
 
 const App = () => {
 	return (
 		<Router>
 			<Provider store={store}>
 				<Navigation />
-				<div className='container'>
+				<div className='container App'>
 					<Switch>
 						<Route path='/' exact component={Landing} />
 						<Route path='/signup' exact component={Signup} />
@@ -37,6 +38,7 @@ const App = () => {
 						<Route exact component={PageNotFound} />
 					</Switch>
 				</div>
+				<Footer />
 			</Provider>
 		</Router>
 	);

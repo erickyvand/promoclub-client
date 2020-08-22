@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
 	TextField,
 	Grid,
@@ -13,6 +13,7 @@ import {
 import { Picker, Emoji } from 'emoji-mart';
 import useStyles from '../../styles/postStyle';
 import { commentAction } from '../../redux/actions/postAction';
+import ViewComments from './ViewComments';
 
 const Comment = ({ postId }) => {
 	const classes = useStyles();
@@ -22,6 +23,8 @@ const Comment = ({ postId }) => {
 	const [open, setOpen] = useState(false);
 	const [comment, setComment] = useState('');
 	const anchorRef = useRef(null);
+
+	const commentMessage = useSelector(state => state.comment.message);
 
 	const handleChange = e => {
 		setComment(e.target.value);
@@ -65,6 +68,7 @@ const Comment = ({ postId }) => {
 			formData.append('comment', comment);
 
 			dispatch(commentAction(postId, formData));
+			setComment('');
 		} else {
 			setAllow(true);
 		}
@@ -122,36 +126,7 @@ const Comment = ({ postId }) => {
 					</Popper>
 				</Grid>
 			</Grid>
-			<Grid container direction='row' spacing={1}>
-				<Grid item xs={2} sm={1} md={1}>
-					<Avatar src=''></Avatar>
-				</Grid>
-				<Grid item xs={10} sm={11} md={11}>
-					<Typography
-						variant='subtitle2'
-						component='div'
-						style={{ backgroundColor: '#e4e8ed', padding: 10, borderRadius: 20 }}
-					>
-						<span className={classes.nameTitle}>Ericky Vand</span> Lorem ipsum
-						dolor sit amet consectetur adipisicing elit. Nesciunt velit dolor
-						voluptates culpa similique tempore officia, vel autem sequi eum
-						veniam et optio praesentium? Commodi error ut et esse distinctio!
-					</Typography>
-					<Grid container direction='row' spacing={1}>
-						<Grid item>
-							<Typography style={{ fontSize: '0.8em', color: 'gray' }}>
-								15h
-							</Typography>{' '}
-						</Grid>
-						<Grid item>
-							<Typography className={classes.editComment}>edit</Typography>{' '}
-						</Grid>
-						<Grid item>
-							<Typography className={classes.deleteComment}>delete</Typography>
-						</Grid>
-					</Grid>
-				</Grid>
-			</Grid>
+			<ViewComments postId={postId} commentMessage={commentMessage} />
 		</div>
 	);
 };

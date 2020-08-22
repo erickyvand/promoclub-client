@@ -8,7 +8,6 @@ import {
 	CardContent,
 } from '@material-ui/core';
 import FadeIn from 'react-fade-in';
-import Footer from './Footer';
 import useStyles from '../../styles/Layouts';
 
 const Landing = () => {
@@ -79,7 +78,6 @@ const Landing = () => {
 					</Grid>
 				</Grid>
 			</FadeIn>
-			<Footer />
 		</div>
 	);
 };

@@ -1,34 +1,36 @@
 import { pending, fulfilled, rejected } from '../../../helpers/utils';
-import { COMMENT } from '../../actionType';
+import { ALL_COMMENTS } from '../../actionType';
 
 const initialState = {
 	message: '',
 	loading: false,
 	error: '',
+	data: [],
 };
 
-const commentReducer = (state = initialState, action) => {
+const allCommentsReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case pending(COMMENT):
+		case pending(ALL_COMMENTS):
 			return {
 				...state,
 				loading: true,
 			};
-		case fulfilled(COMMENT):
+		case fulfilled(ALL_COMMENTS):
 			return {
 				...state,
 				loading: false,
 				message: action.payload.data.message,
+				data: action.payload.data.data,
 			};
-		case rejected(COMMENT):
+		case rejected(ALL_COMMENTS):
 			return {
 				...state,
 				loading: false,
 				error: action.payload.response.data.message,
 			};
 		default:
-			return false;
+			return state;
 	}
 };
 
-export default commentReducer;
+export default allCommentsReducer;
