@@ -11,6 +11,7 @@ import viewOwnPotsReducer from './reducers/posts/ownPostsReducer';
 import commentReducer from './reducers/posts/commentReducer';
 import viewCommentReducer from './reducers/posts/viewCommentReducer';
 import allCommentsReducer from './reducers/posts/allCommentsReducer';
+import editPostReducer from './reducers/posts/editPostReducer';
 
 const rootReducer = combineReducers({
 	signup: signupReducer,
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
 	comment: commentReducer,
 	viewComments: viewCommentReducer,
 	allComments: allCommentsReducer,
+	editPost: editPostReducer,
 });
 
 export default rootReducer;

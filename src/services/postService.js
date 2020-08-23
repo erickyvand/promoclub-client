@@ -12,6 +12,10 @@ export const viewOwnPostService = (userId, page, limit) => {
 	return fetch.get(`/api/posts/view/${userId}?page=${page}&limit=${limit}`);
 };
 
+export const editPostService = (postId, data) => {
+	return fetch.patch(`/api/posts/${postId}/edit`, data)
+} 
+
 export const commentService = (postId, data) => {
 	return fetch.post(`/api/posts/${postId}/comments`, data);
 };

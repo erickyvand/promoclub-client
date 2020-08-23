@@ -11,3 +11,4 @@ export const OWN_POSTS = 'OWN_POSTS';
 export const COMMENT = 'COMMENT';
 export const VIEW_COMMENTS = 'VIEW_COMMENTS';
 export const ALL_COMMENTS = 'ALL_COMMENTS';
+export const EDIT_POST = 'EDIT_POST';

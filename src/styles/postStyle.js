@@ -100,6 +100,12 @@ const useStyles = makeStyles(theme => ({
 			textDecoration: 'underline',
 		},
 	},
+
+	// Edit post
+	formEdit: {
+		width: '100%',
+		marginTop: theme.spacing(1),
+	},
 }));
 
 export default useStyles;
