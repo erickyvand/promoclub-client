@@ -14,6 +14,7 @@ import {
 	InputAdornment,
 	IconButton,
 	FormHelperText,
+	Tooltip,
 } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -139,16 +140,24 @@ const Login = () => {
 											}
 											endAdornment={
 												<InputAdornment position='end'>
-													<IconButton
-														aria-label='toggle password visibility'
-														onClick={handleClickShowPassword}
-													>
-														{passwordShown ? (
-															<VisibilityOffIcon />
-														) : (
+													{passwordShown ? (
+														<Tooltip title='Hide Password'>
+															<IconButton
+																aria-label='toggle password visibility'
+																onClick={handleClickShowPassword}
+															>
+																<VisibilityOffIcon />
+															</IconButton>
+														</Tooltip>
+													) : (
+														<IconButton
+															aria-label='toggle password visibility'
+															onClick={handleClickShowPassword}
+															title='Show Password'
+														>
 															<VisibilityIcon />
-														)}
-													</IconButton>
+														</IconButton>
+													)}
 												</InputAdornment>
 											}
 										/>

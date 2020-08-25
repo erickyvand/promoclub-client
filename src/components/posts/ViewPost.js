@@ -9,9 +9,10 @@ import {
 	Typography,
 	CircularProgress,
 	Tooltip,
+	Menu,
+	MenuItem,
 } from '@material-ui/core';
 import moment from 'moment';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import CommentIcon from '@material-ui/icons/Comment';
@@ -25,6 +26,7 @@ import {
 } from '../../redux/actions/postAction';
 import ReadMore from '../layouts/ReadMore';
 import Comment from './Comment';
+import EditPost from './EditPost';
 
 const ViewPost = () => {
 	const classes = useStyles();
@@ -33,6 +35,7 @@ const ViewPost = () => {
 	const viewPosts = useSelector(state => state.viewPosts);
 	const message = useSelector(state => state.viewPostsmessage);
 	const postMessage = useSelector(state => state.postReducer.message);
+	const updatedMessage = useSelector(state => state.editPost.data.updatedAt);
 	const allComments = useSelector(state => state.allComments);
 	const comments = [...allComments.data];
 
@@ -60,13 +63,19 @@ const ViewPost = () => {
 
 	const handleComment = id => {
 		setPostId(id);
-		setVisible(true);
+		setVisible(!visible);
 	};
 
 	useEffect(() => {
 		dispatch(viewPostsAction(page, limit));
 		dispatch(allCommentsAction());
-	}, [message, postMessage, limit]);
+	}, [
+		message,
+		postMessage,
+		limit,
+		updatedMessage,
+		sessionStorage.getItem('id'),
+	]);
 
 	return (
 		<div style={{ marginTop: 35 }}>
@@ -161,11 +170,7 @@ const ViewPost = () => {
 										</Avatar>
 									</Link>
 								}
-								action={
-									<IconButton aria-label='settings'>
-										<MoreVertIcon />
-									</IconButton>
-								}
+								action={<EditPost postId={post.id} userId={post.userId} />}
 								title={
 									<Link
 										to={`/${post.User.firstName}${post.User.lastName}${post.User.id}`.toLowerCase()}

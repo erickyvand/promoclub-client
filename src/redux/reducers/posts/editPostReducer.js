@@ -4,12 +4,11 @@ import { EDIT_PROFILE } from '../../actionType';
 const initialState = {
 	message: '',
 	loading: false,
-	redirect: false,
-	error: '',
-	data: {},
+  error: '',
+  data: ''
 };
 
-const editProfileReducer = (state = initialState, action) => {
+const editPostReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case pending(EDIT_PROFILE):
 			return {
@@ -20,9 +19,8 @@ const editProfileReducer = (state = initialState, action) => {
 			return {
 				...state,
 				loading: false,
-				message: action.payload.data.message,
-				data: action.payload.data.data,
-				redirect: true,
+        message: action.payload.data.message,
+        data: action.payload.data.data
 			};
 		case rejected(EDIT_PROFILE):
 			return {
@@ -35,4 +33,4 @@ const editProfileReducer = (state = initialState, action) => {
 	}
 };
 
-export default editProfileReducer;
+export default editPostReducer;

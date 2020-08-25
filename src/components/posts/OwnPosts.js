@@ -20,15 +20,19 @@ import ReadMore from '../layouts/ReadMore';
 import {
 	viewOwnPostsAction,
 	allCommentsAction,
+	viewPostsAction,
 } from '../../redux/actions/postAction';
 import useStyles from '../../styles/postStyle';
 import Comment from './Comment';
+import EditPost from './EditPost';
 
 const OwnPosts = ({ userId }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
 	const ownPosts = useSelector(state => state.ownPosts);
+	const viewPosts = useSelector(state => state.viewPosts);
+	const updatedMessage = useSelector(state => state.editPost.data.updatedAt);
 	const allComments = useSelector(state => state.allComments);
 	const comments = [...allComments.data];
 
@@ -36,6 +40,7 @@ const OwnPosts = ({ userId }) => {
 	const [limit, setLimit] = useState(5);
 	const [visible, setVisible] = useState(false);
 	const [postId, setPostId] = useState('');
+	const [length, setLength] = useState(10);
 
 	let postLength;
 	if (ownPosts.data.rows !== undefined) {
@@ -55,13 +60,15 @@ const OwnPosts = ({ userId }) => {
 
 	const handleComment = id => {
 		setPostId(id);
-		setVisible(true);
+		setVisible(!visible);
 	};
 
 	useEffect(() => {
 		dispatch(viewOwnPostsAction(userId, page, limit));
+		setLength(prevLength => prevLength + 10);
+		dispatch(viewPostsAction(1, length));
 		dispatch(allCommentsAction());
-	}, [limit, userId]);
+	}, [limit, userId, updatedMessage]);
 	return (
 		<div>
 			{ownPosts.data.length === 0 ? (
@@ -87,11 +94,7 @@ const OwnPosts = ({ userId }) => {
 										</Avatar>
 									</Link>
 								}
-								action={
-									<IconButton aria-label='settings'>
-										<MoreVertIcon />
-									</IconButton>
-								}
+								action={<EditPost postId={post.id} userId={post.userId} />}
 								title={
 									<Link
 										to={`/${post.User.firstName}${post.User.lastName}${post.User.id}`.toLowerCase()}

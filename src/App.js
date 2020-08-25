@@ -11,9 +11,10 @@ import store from './redux/store';
 import Oauth from './components/auth/Oauth';
 import SearchAccount from './components/auth/SearchAccount';
 import ResetPassword from './components/auth/ResetPassword';
-import Post from './components/posts/Post';
+import Feed from './components/posts/Feed';
 import Profile from './components/users/Profile';
 import Footer from './components/layouts/Footer';
+import EditPost from './components/posts/EditPost';
 
 const App = () => {
 	return (
@@ -26,7 +27,7 @@ const App = () => {
 						<Route path='/signup' exact component={Signup} />
 						<Route path='/login' exact component={Login} />
 						<Route path='/oauth' exact component={Oauth} />
-						<Route path='/feed' exact component={Post} />
+						<Route path='/feed' exact component={Feed} />
 						<Route path='/search-account' exact component={SearchAccount} />
 						<Route path='/reset-password' exact component={ResetPassword} />
 						<Route path='/:username' exact component={Profile} />
@@ -35,6 +36,7 @@ const App = () => {
 							exact
 							component={Profile}
 						/>
+						<Route path='/feed/post/edit/:postId' exact component={EditPost} />
 						<Route exact component={PageNotFound} />
 					</Switch>
 				</div>

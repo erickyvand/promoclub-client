@@ -39,7 +39,7 @@ const Profile = props => {
 	const dispatch = useDispatch();
 
 	const profile = useSelector(state => state.profile);
-	const successMessage = useSelector(state => state.editProfile.message);
+	const successMessage = useSelector(state => state.editProfile.data.updatedAt);
 	const errorMessage = useSelector(state => state.editProfile.error);
 
 	const [value, setValue] = useState(0);
