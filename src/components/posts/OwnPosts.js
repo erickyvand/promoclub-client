@@ -25,6 +25,7 @@ import {
 import useStyles from '../../styles/postStyle';
 import Comment from './Comment';
 import EditPost from './EditPost';
+import DeletePost from './DeletePost';
 
 const OwnPosts = ({ userId }) => {
 	const classes = useStyles();
@@ -64,10 +65,13 @@ const OwnPosts = ({ userId }) => {
 	};
 
 	useEffect(() => {
-		dispatch(viewOwnPostsAction(userId, page, limit));
-		setLength(prevLength => prevLength + 10);
-		dispatch(viewPostsAction(1, length));
-		dispatch(allCommentsAction());
+		const interval = setInterval(() => {
+			dispatch(viewOwnPostsAction(userId, page, limit));
+			setLength(prevLength => prevLength + 10);
+			dispatch(viewPostsAction(1, length));
+			dispatch(allCommentsAction());
+		}, 3000);
+		return () => clearInterval(interval);
 	}, [limit, userId, updatedMessage]);
 	return (
 		<div>
@@ -174,6 +178,7 @@ const OwnPosts = ({ userId }) => {
 											: `${commentCount.length} comments`}
 									</Typography>
 								</IconButton>
+								<DeletePost postId={post.id} userId={post.userId} />
 							</CardActions>
 							<CardActions>
 								{visible && post.id === postId ? (

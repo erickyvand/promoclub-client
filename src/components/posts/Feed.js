@@ -18,6 +18,7 @@ const Feed = () => {
 
 	const profile = useSelector(state => state.profile);
 	const viewPosts = useSelector(state => state.viewPosts);
+	const message = useSelector(state => state.postReducer.data.id);
 
 	let posts;
 	if (viewPosts.data !== 0 && viewPosts.data.rows !== undefined) {
@@ -28,7 +29,7 @@ const Feed = () => {
 
 	useEffect(() => {
 		dispatch(profileAction(sessionStorage.getItem('id')));
-	}, []);
+	}, [message]);
 
 	return (
 		<div>
@@ -69,8 +70,8 @@ const Feed = () => {
 					</div>
 				</Grid>
 				<Grid item xs={12} sm={12} md={6}>
-					<CreatePost />
-					<ViewPost />
+					<CreatePost message={message} />
+					<ViewPost postedMessage={message} />
 				</Grid>
 				<Grid item xs={12} sm={12} md={3}>
 					<SideFooter />

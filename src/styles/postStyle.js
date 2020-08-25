@@ -106,6 +106,13 @@ const useStyles = makeStyles(theme => ({
 		width: '100%',
 		marginTop: theme.spacing(1),
 	},
+
+	// Delete Post
+	deletePost: {
+		'&:hover': {
+			color: '#912b0c',
+		},
+	},
 }));
 
 export default useStyles;
