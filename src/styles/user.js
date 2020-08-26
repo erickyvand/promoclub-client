@@ -51,6 +51,7 @@ const useStyles = makeStyles(theme => ({
 		height: 200,
 		borderRadius: 100,
 		margin: '-100px 0px 0px 50px',
+		cursor: 'pointer',
 	},
 	input: {
 		display: 'none',

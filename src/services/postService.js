@@ -13,8 +13,12 @@ export const viewOwnPostService = (userId, page, limit) => {
 };
 
 export const editPostService = (postId, data) => {
-	return fetch.patch(`/api/posts/${postId}/edit`, data)
-} 
+	return fetch.patch(`/api/posts/${postId}/edit`, data);
+};
+
+export const deletePostService = postId => {
+	return fetch.delete(`/api/posts/${postId}/delete`);
+};
 
 export const commentService = (postId, data) => {
 	return fetch.post(`/api/posts/${postId}/comments`, data);

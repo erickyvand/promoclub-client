@@ -12,6 +12,9 @@ import {
 	TableContainer,
 	Paper,
 	Collapse,
+	Dialog,
+	DialogTitle,
+	DialogContent,
 } from '@material-ui/core';
 import moment from 'moment';
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -44,6 +47,7 @@ const Profile = props => {
 
 	const [value, setValue] = useState(0);
 	const [open, setOpen] = useState(true);
+	const [unlock, setUnlock] = useState(false);
 
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
@@ -51,6 +55,14 @@ const Profile = props => {
 
 	const handleClose = () => {
 		setOpen(false);
+	};
+
+	const handleOpenDialog = () => {
+		setUnlock(true);
+	};
+
+	const handleCloseDialog = () => {
+		setUnlock(false);
 	};
 
 	useEffect(() => {
@@ -88,9 +100,22 @@ const Profile = props => {
 							variant='circle'
 							src={`${process.env.API_URL}/${profile.data.profilePicture}`}
 							className={classes.profileImage}
+							onClick={handleOpenDialog}
 						/>
 					)}
 				</Grid>
+				<Dialog open={unlock} onClose={handleCloseDialog}>
+					<DialogTitle>
+						{profile.data.firstName} {profile.data.lastName}
+					</DialogTitle>
+					<DialogContent>
+						<Avatar
+							variant='rounded'
+							src={`${process.env.API_URL}/${profile.data.profilePicture}`}
+							style={{ width: 500, height: 500 }}
+						/>
+					</DialogContent>
+				</Dialog>
 				<Grid item xs={12} sm={12} md={4}>
 					<EditProfile userId={userId} profile={profile} />
 				</Grid>
