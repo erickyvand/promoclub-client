@@ -10,7 +10,6 @@ import {
 	CircularProgress,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import CommentIcon from '@material-ui/icons/Comment';
@@ -25,6 +24,7 @@ import {
 import useStyles from '../../styles/postStyle';
 import Comment from './Comment';
 import EditPost from './EditPost';
+import DeletePost from './DeletePost';
 
 const OwnPosts = ({ userId }) => {
 	const classes = useStyles();
@@ -64,10 +64,13 @@ const OwnPosts = ({ userId }) => {
 	};
 
 	useEffect(() => {
-		dispatch(viewOwnPostsAction(userId, page, limit));
-		setLength(prevLength => prevLength + 10);
-		dispatch(viewPostsAction(1, length));
-		dispatch(allCommentsAction());
+		const interval = setInterval(() => {
+			dispatch(viewOwnPostsAction(userId, page, limit));
+			setLength(prevLength => prevLength + 10);
+			dispatch(viewPostsAction(1, length));
+			dispatch(allCommentsAction());
+		}, 3000);
+		return () => clearInterval(interval);
 	}, [limit, userId, updatedMessage]);
 	return (
 		<div>
@@ -174,6 +177,7 @@ const OwnPosts = ({ userId }) => {
 											: `${commentCount.length} comments`}
 									</Typography>
 								</IconButton>
+								<DeletePost postId={post.id} userId={post.userId} />
 							</CardActions>
 							<CardActions>
 								{visible && post.id === postId ? (

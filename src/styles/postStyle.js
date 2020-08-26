@@ -88,6 +88,7 @@ const useStyles = makeStyles(theme => ({
 	editComment: {
 		fontSize: '0.8em',
 		color: '#126eb0',
+		cursor: 'pointer',
 		'&:hover': {
 			textDecoration: 'underline',
 		},
@@ -105,6 +106,13 @@ const useStyles = makeStyles(theme => ({
 	formEdit: {
 		width: '100%',
 		marginTop: theme.spacing(1),
+	},
+
+	// Delete Post
+	deletePost: {
+		'&:hover': {
+			color: '#912b0c',
+		},
 	},
 }));
 

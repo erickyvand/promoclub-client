@@ -7,6 +7,8 @@ import {
 	ALL_COMMENTS,
 	SINGLE_POST,
 	EDIT_PROFILE,
+	DELETE_POST,
+	EDIT_COMMENT,
 } from '../actionType';
 import {
 	postService,
@@ -17,6 +19,8 @@ import {
 	allCommentsService,
 	singlePostService,
 	editPostService,
+	deletePostService,
+	editCommentService,
 } from '../../services/postService';
 
 export const postAction = data => {
@@ -65,5 +69,19 @@ export const editPostAction = (postId, data) => {
 	return {
 		type: EDIT_PROFILE,
 		payload: editPostService(postId, data),
+	};
+};
+
+export const deletePostAction = postId => {
+	return {
+		type: DELETE_POST,
+		payload: deletePostService(postId),
+	};
+};
+
+export const editCommentAction = (postId, commentId, data) => {
+	return {
+		type: EDIT_COMMENT,
+		payload: editCommentService(postId, commentId, data),
 	};
 };

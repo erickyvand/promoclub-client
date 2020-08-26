@@ -27,8 +27,9 @@ import {
 import ReadMore from '../layouts/ReadMore';
 import Comment from './Comment';
 import EditPost from './EditPost';
+import DeletePost from './DeletePost';
 
-const ViewPost = () => {
+const ViewPost = ({ postedMessage }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
@@ -67,13 +68,17 @@ const ViewPost = () => {
 	};
 
 	useEffect(() => {
-		dispatch(viewPostsAction(page, limit));
-		dispatch(allCommentsAction());
+		const interval = setInterval(() => {
+			dispatch(viewPostsAction(page, limit));
+			dispatch(allCommentsAction());
+		}, 3000);
+		return () => clearInterval(interval);
 	}, [
 		message,
 		postMessage,
 		limit,
 		updatedMessage,
+		postedMessage,
 		sessionStorage.getItem('id'),
 	]);
 
@@ -256,6 +261,7 @@ const ViewPost = () => {
 										</Typography>
 									</IconButton>
 								</Tooltip>
+								<DeletePost postId={post.id} userId={post.userId} />
 							</CardActions>
 							<CardActions>
 								{visible && postId === post.id ? (

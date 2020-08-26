@@ -12,3 +12,5 @@ export const COMMENT = 'COMMENT';
 export const VIEW_COMMENTS = 'VIEW_COMMENTS';
 export const ALL_COMMENTS = 'ALL_COMMENTS';
 export const EDIT_POST = 'EDIT_POST';
+export const DELETE_POST = 'DELETE_POST';
+export const EDIT_COMMENT = 'EDIT_COMMENT';

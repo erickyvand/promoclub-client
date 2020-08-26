@@ -41,13 +41,12 @@ const validateFile = (file, setError) => {
 	}
 };
 
-const CreatePost = () => {
+const CreatePost = ({ message }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const history = useHistory();
 
 	const postReducer = useSelector(state => state.postReducer);
-	const message = useSelector(state => state.postReducer.message);
 
 	const [file, setFile] = useState();
 	const [preview, setPreview] = useState();

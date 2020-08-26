@@ -60,6 +60,7 @@ const Comment = ({ postId }) => {
 		prevOpen.current = open;
 	}, [open]);
 
+	// Allow press enter and submit
 	const handleKey = e => {
 		if (e.keyCode === 13 && !e.shiftKey) {
 			setAllow(false);
