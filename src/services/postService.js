@@ -35,3 +35,7 @@ export const allCommentsService = () => {
 export const editCommentService = (postId, commentId, data) => {
 	return fetch.patch(`/api/posts/${postId}/comments/${commentId}/edit`, data);
 };
+
+export const deleteCommentService = (postId, commentId) => {
+	return fetch.delete(`/api/posts/${postId}/comments/${commentId}/delete`);
+};

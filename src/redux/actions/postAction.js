@@ -5,10 +5,10 @@ import {
 	COMMENT,
 	VIEW_COMMENTS,
 	ALL_COMMENTS,
-	SINGLE_POST,
 	EDIT_PROFILE,
 	DELETE_POST,
 	EDIT_COMMENT,
+	DELETE_COMMENT,
 } from '../actionType';
 import {
 	postService,
@@ -17,10 +17,10 @@ import {
 	commentService,
 	viewCommentService,
 	allCommentsService,
-	singlePostService,
 	editPostService,
 	deletePostService,
 	editCommentService,
+	deleteCommentService,
 } from '../../services/postService';
 
 export const postAction = data => {
@@ -83,5 +83,12 @@ export const editCommentAction = (postId, commentId, data) => {
 	return {
 		type: EDIT_COMMENT,
 		payload: editCommentService(postId, commentId, data),
+	};
+};
+
+export const deleteCommentAction = (postId, commentId) => {
+	return {
+		type: DELETE_COMMENT,
+		payload: deleteCommentService(postId, commentId),
 	};
 };

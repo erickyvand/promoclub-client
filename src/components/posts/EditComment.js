@@ -16,6 +16,7 @@ import 'emoji-mart/css/emoji-mart.css';
 import { Picker, Emoji } from 'emoji-mart';
 import useStyles from '../../styles/postStyle';
 import { useSelector, useDispatch } from 'react-redux';
+import CloseIcon from '@material-ui/icons/Close';
 import { editCommentAction } from '../../redux/actions/postAction';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -76,7 +77,12 @@ const EditComment = ({ commentId, postId, userId }) => {
 				TransitionComponent={Transition}
 				onClose={handleCloseDialog}
 			>
-				<DialogTitle>Edit your comment</DialogTitle>
+				<DialogTitle>
+					<Typography component='span'>Edit your comment</Typography>
+					<IconButton onClick={handleCloseDialog} style={{ float: 'right' }}>
+						<CloseIcon />
+					</IconButton>
+				</DialogTitle>
 				<DialogContent>
 					<TextField
 						id='post'
