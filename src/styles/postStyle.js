@@ -88,6 +88,7 @@ const useStyles = makeStyles(theme => ({
 	editComment: {
 		fontSize: '0.8em',
 		color: '#126eb0',
+		cursor: 'pointer',
 		'&:hover': {
 			textDecoration: 'underline',
 		},

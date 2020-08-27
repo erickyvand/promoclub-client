@@ -10,7 +10,6 @@ import {
 	CircularProgress,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import CommentIcon from '@material-ui/icons/Comment';

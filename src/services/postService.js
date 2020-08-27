@@ -31,3 +31,7 @@ export const viewCommentService = (postId, page, limit) => {
 export const allCommentsService = () => {
 	return fetch.get('api/posts/comments');
 };
+
+export const editCommentService = (postId, commentId, data) => {
+	return fetch.patch(`/api/posts/${postId}/comments/${commentId}/edit`, data);
+};
