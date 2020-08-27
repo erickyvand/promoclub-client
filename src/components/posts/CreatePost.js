@@ -118,8 +118,6 @@ const CreatePost = ({ message }) => {
 		setPost();
 		setFile('');
 		setIcon();
-
-		history.push('/feed');
 	};
 
 	// return focus to the button when we transitioned from !open -> open

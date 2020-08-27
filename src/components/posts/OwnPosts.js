@@ -8,6 +8,7 @@ import {
 	Typography,
 	CardActions,
 	CircularProgress,
+	Divider,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
@@ -25,6 +26,9 @@ import useStyles from '../../styles/postStyle';
 import Comment from './Comment';
 import EditPost from './EditPost';
 import DeletePost from './DeletePost';
+import LikePost from './LikePost';
+import UnlikePost from './UnlikePost';
+import CreatePost from './CreatePost';
 
 const OwnPosts = ({ userId }) => {
 	const classes = useStyles();
@@ -74,6 +78,12 @@ const OwnPosts = ({ userId }) => {
 	}, [limit, userId, updatedMessage]);
 	return (
 		<div>
+			{sessionStorage.getItem('id') === userId && (
+				<div style={{ marginBottom: 30 }}>
+					<CreatePost />
+				</div>
+			)}
+			<Divider />
 			{ownPosts.data.length === 0 ? (
 				<CircularProgress className={classes.circularProgress} />
 			) : ownPosts.data.rows.length === 0 ? (
@@ -140,26 +150,8 @@ const OwnPosts = ({ userId }) => {
 								''
 							)}
 							<CardActions disableSpacing>
-								<IconButton aria-label='like'>
-									<ThumbUpIcon /> &nbsp;
-									<Typography
-										variant='body2'
-										color='textSecondary'
-										component='p'
-									>
-										12
-									</Typography>
-								</IconButton>
-								<IconButton aria-label='dislike'>
-									<ThumbDownIcon /> &nbsp;
-									<Typography
-										variant='body2'
-										color='textSecondary'
-										component='p'
-									>
-										1
-									</Typography>
-								</IconButton>
+								<LikePost postId={post.id} />
+								<UnlikePost postId={post.id} />
 								<IconButton
 									aria-label='comment'
 									onClick={() => handleComment(post.id)}

@@ -9,12 +9,8 @@ import {
 	Typography,
 	CircularProgress,
 	Tooltip,
-	Menu,
-	MenuItem,
 } from '@material-ui/core';
 import moment from 'moment';
-import ThumbUpIcon from '@material-ui/icons/ThumbUp';
-import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import CommentIcon from '@material-ui/icons/Comment';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,6 +24,8 @@ import ReadMore from '../layouts/ReadMore';
 import Comment from './Comment';
 import EditPost from './EditPost';
 import DeletePost from './DeletePost';
+import LikePost from './LikePost';
+import UnlikePost from './UnlikePost';
 
 const ViewPost = ({ postedMessage }) => {
 	const classes = useStyles();
@@ -218,30 +216,8 @@ const ViewPost = ({ postedMessage }) => {
 								''
 							)}
 							<CardActions disableSpacing>
-								<Tooltip title='Like' placement='bottom'>
-									<IconButton aria-label='like'>
-										<ThumbUpIcon /> &nbsp;
-										<Typography
-											variant='body2'
-											color='textSecondary'
-											component='p'
-										>
-											12
-										</Typography>
-									</IconButton>
-								</Tooltip>
-								<Tooltip title='Dislike' placement='bottom'>
-									<IconButton aria-label='dislike'>
-										<ThumbDownIcon /> &nbsp;
-										<Typography
-											variant='body2'
-											color='textSecondary'
-											component='p'
-										>
-											1
-										</Typography>
-									</IconButton>
-								</Tooltip>
+								<LikePost postId={post.id} />
+								<UnlikePost postId={post.id} />
 								<Tooltip title='Comment' placement='bottom'>
 									<IconButton
 										onClick={() => handleComment(post.id)}

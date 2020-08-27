@@ -15,3 +15,7 @@ export const EDIT_POST = 'EDIT_POST';
 export const DELETE_POST = 'DELETE_POST';
 export const EDIT_COMMENT = 'EDIT_COMMENT';
 export const DELETE_COMMENT = 'DELETE_COMMENT';
+export const LIKE_POST = 'LIKE_POST';
+export const COUNT_LIKE = 'COUNT_LIKE';
+export const UNLIKE_POST = 'UNLIKE_POST';
+export const COUNT_UNLIKE = 'COUNT_UNLIKE';
