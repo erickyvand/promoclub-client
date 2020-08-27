@@ -7,6 +7,7 @@ import { viewCommentAction } from '../../redux/actions/postAction';
 import { Link } from 'react-router-dom';
 import ReadMore from '../layouts/ReadMore';
 import EditComment from './EditComment';
+import DeleteComment from './DeleteComment';
 
 const ViewComments = ({ postId, commentMessage }) => {
 	const classes = useStyles();
@@ -19,6 +20,7 @@ const ViewComments = ({ postId, commentMessage }) => {
 	const editCommentMessage = useSelector(
 		state => state.editComment.data.updatedAt
 	);
+	const deletedCommentMessage = useSelector(state => state.deleteComment.data);
 
 	let postLength;
 	if (viewComments.data.rows !== undefined) {
@@ -39,7 +41,7 @@ const ViewComments = ({ postId, commentMessage }) => {
 
 	useEffect(() => {
 		dispatch(viewCommentAction(postId, page, limit));
-	}, [commentMessage, limit, editCommentMessage]);
+	}, [commentMessage, limit, editCommentMessage, deletedCommentMessage]);
 
 	return (
 		<div>
@@ -105,9 +107,11 @@ const ViewComments = ({ postId, commentMessage }) => {
 									/>
 								</Grid>
 								<Grid item>
-									<Typography className={classes.deleteComment}>
-										delete
-									</Typography>
+									<DeleteComment
+										commentId={comment.id}
+										postId={postId}
+										userId={comment.userId}
+									/>
 								</Grid>
 							</Grid>
 						</Grid>

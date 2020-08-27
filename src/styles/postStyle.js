@@ -100,6 +100,7 @@ const useStyles = makeStyles(theme => ({
 			color: '#912b0c',
 			textDecoration: 'underline',
 		},
+		cursor: 'pointer',
 	},
 
 	// Edit post
