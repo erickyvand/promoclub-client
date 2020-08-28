@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Grid, IconButton, Typography, Paper, Avatar } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,6 +8,7 @@ import ViewPost from './ViewPost';
 import { profileAction } from '../../redux/actions/userAction';
 import SideFooter from '../layouts/SideFooter';
 import CreatePost from './CreatePost';
+import CreateSidePost from './CreateSidePost';
 
 const Feed = () => {
 	if (!sessionStorage.getItem('token') || !sessionStorage.getItem('id')) {
@@ -64,6 +65,9 @@ const Feed = () => {
 											{moment(profile.data.createdAt).format('MMMM Do YYYY')}
 										</Typography>
 									</IconButton>
+								</Grid>
+								<Grid item>
+									<CreateSidePost />
 								</Grid>
 							</Grid>
 						</Paper>

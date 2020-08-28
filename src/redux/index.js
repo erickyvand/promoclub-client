@@ -15,6 +15,10 @@ import editPostReducer from './reducers/posts/editPostReducer';
 import deletePostReducer from './reducers/posts/deletePostReducer';
 import editCommentReducer from './reducers/posts/editCommentReducer';
 import deleteCommentReducer from './reducers/posts/deleteCommentReducer';
+import likePostReducer from './reducers/posts/likePostReducer';
+import countLikeReducer from './reducers/posts/countLikeReducer';
+import unlikePostReducer from './reducers/posts/unlikePostReducer';
+import countUnlikeReducer from './reducers/posts/countUnlikeReducer';
 
 const rootReducer = combineReducers({
 	signup: signupReducer,
@@ -33,6 +37,10 @@ const rootReducer = combineReducers({
 	deletePost: deletePostReducer,
 	editComment: editCommentReducer,
 	deleteComment: deleteCommentReducer,
+	likePost: likePostReducer,
+	countLike: countLikeReducer,
+	unlikePost: unlikePostReducer,
+	countUnlike: countUnlikeReducer,
 });
 
 export default rootReducer;

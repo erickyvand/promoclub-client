@@ -9,6 +9,10 @@ import {
 	DELETE_POST,
 	EDIT_COMMENT,
 	DELETE_COMMENT,
+	LIKE_POST,
+	COUNT_LIKE,
+	UNLIKE_POST,
+	COUNT_UNLIKE,
 } from '../actionType';
 import {
 	postService,
@@ -21,6 +25,10 @@ import {
 	deletePostService,
 	editCommentService,
 	deleteCommentService,
+	likePostService,
+	countLikeService,
+	unlikePostService,
+	countUnlikeService,
 } from '../../services/postService';
 
 export const postAction = data => {
@@ -90,5 +98,33 @@ export const deleteCommentAction = (postId, commentId) => {
 	return {
 		type: DELETE_COMMENT,
 		payload: deleteCommentService(postId, commentId),
+	};
+};
+
+export const likePostAction = postId => {
+	return {
+		type: LIKE_POST,
+		payload: likePostService(postId),
+	};
+};
+
+export const countLikeAction = () => {
+	return {
+		type: COUNT_LIKE,
+		payload: countLikeService(),
+	};
+};
+
+export const unlikePostAction = postId => {
+	return {
+		type: UNLIKE_POST,
+		payload: unlikePostService(postId),
+	};
+};
+
+export const countUnlikeAction = () => {
+	return {
+		type: COUNT_UNLIKE,
+		payload: countUnlikeService(),
 	};
 };

@@ -39,3 +39,19 @@ export const editCommentService = (postId, commentId, data) => {
 export const deleteCommentService = (postId, commentId) => {
 	return fetch.delete(`/api/posts/${postId}/comments/${commentId}/delete`);
 };
+
+export const likePostService = postId => {
+	return fetch.patch(`/api/posts/${postId}/like`);
+};
+
+export const countLikeService = () => {
+	return fetch.get(`/api/posts/likes`);
+};
+
+export const unlikePostService = postId => {
+	return fetch.patch(`/api/posts/${postId}/unlike`);
+};
+
+export const countUnlikeService = () => {
+	return fetch.get(`/api/posts/unlikes`);
+};
