@@ -85,7 +85,7 @@ const OwnPosts = ({ userId }) => {
 			)}
 			<Divider />
 			{ownPosts.data.length === 0 ? (
-				<CircularProgress className={classes.circularProgress} />
+				<CircularProgress size={10} className={classes.circularProgress} />
 			) : ownPosts.data.rows.length === 0 ? (
 				<span className={classes.noPostMessage}>
 					You have not created any post yet
@@ -183,7 +183,7 @@ const OwnPosts = ({ userId }) => {
 				})
 			)}
 			{ownPosts.loading && (
-				<CircularProgress className={classes.circularProgress} />
+				<CircularProgress size={10} className={classes.circularProgress} />
 			)}
 		</div>
 	);

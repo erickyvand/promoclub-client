@@ -13,6 +13,8 @@ import {
 	COUNT_LIKE,
 	UNLIKE_POST,
 	COUNT_UNLIKE,
+	COUNT_OWN_POSTS,
+	SINGLE_POST,
 } from '../actionType';
 import {
 	postService,
@@ -29,6 +31,8 @@ import {
 	countLikeService,
 	unlikePostService,
 	countUnlikeService,
+	countOwnPostsService,
+	singlePostService,
 } from '../../services/postService';
 
 export const postAction = data => {
@@ -49,6 +53,20 @@ export const viewOwnPostsAction = (userId, page, limit) => {
 	return {
 		type: OWN_POSTS,
 		payload: viewOwnPostService(userId, page, limit),
+	};
+};
+
+export const countOwnPostsAction = userId => {
+	return {
+		type: COUNT_OWN_POSTS,
+		payload: countOwnPostsService(userId),
+	};
+};
+
+export const singlePostAction = postId => {
+	return {
+		type: SINGLE_POST,
+		payload: singlePostService(postId),
 	};
 };
 

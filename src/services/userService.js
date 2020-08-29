@@ -7,3 +7,7 @@ export const profileService = userId => {
 export const editProfileService = (userId, data) => {
 	return fetch.patch(`/api/auth/edit-profile/${userId}`, data);
 };
+
+export const getUsersService = () => {
+	return fetch.get('/api/auth/users');
+};

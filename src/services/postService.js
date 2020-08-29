@@ -12,6 +12,14 @@ export const viewOwnPostService = (userId, page, limit) => {
 	return fetch.get(`/api/posts/view/${userId}?page=${page}&limit=${limit}`);
 };
 
+export const countOwnPostsService = userId => {
+	return fetch.get(`/api/posts/count/${userId}`);
+};
+
+export const singlePostService = postId => {
+	return fetch.get(`/api/posts/${postId}/post`);
+};
+
 export const editPostService = (postId, data) => {
 	return fetch.patch(`/api/posts/${postId}/edit`, data);
 };
@@ -29,7 +37,7 @@ export const viewCommentService = (postId, page, limit) => {
 };
 
 export const allCommentsService = () => {
-	return fetch.get('api/posts/comments');
+	return fetch.get('/api/posts/comments');
 };
 
 export const editCommentService = (postId, commentId, data) => {

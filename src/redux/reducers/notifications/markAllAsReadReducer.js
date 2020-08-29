@@ -1,36 +1,34 @@
 import { pending, fulfilled, rejected } from '../../../helpers/utils';
-import { VIEW_POSTS } from '../../actionType';
+import { MARK_ALL_READ } from '../../actionType';
 
 const initialState = {
 	message: '',
 	loading: false,
 	error: '',
-	data: [],
 };
 
-const viewPostsReducer = (state = initialState, action) => {
+const markAllAsReadReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case pending(VIEW_POSTS):
+		case pending(MARK_ALL_READ):
 			return {
 				...state,
 				loading: true,
 			};
-		case fulfilled(VIEW_POSTS):
+		case fulfilled(MARK_ALL_READ):
 			return {
 				...state,
 				loading: false,
-				message: Math.random(),
-				data: action.payload.data.data,
+				message: action.payload.data.message,
 			};
-		case rejected():
+		case rejected(MARK_ALL_READ):
 			return {
 				...state,
 				loading: false,
-				error: action.payload.response.data.message,
+				errror: action.payload.response.data.message,
 			};
 		default:
 			return state;
 	}
 };
 
-export default viewPostsReducer;
+export default markAllAsReadReducer;

@@ -1,36 +1,36 @@
 import { pending, fulfilled, rejected } from '../../../helpers/utils';
-import { VIEW_POSTS } from '../../actionType';
+import { READ_NOTIFICATION } from '../../actionType';
 
 const initialState = {
 	message: '',
 	loading: false,
 	error: '',
-	data: [],
+	data: '',
 };
 
-const viewPostsReducer = (state = initialState, action) => {
+const readNotificationReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case pending(VIEW_POSTS):
+		case pending(READ_NOTIFICATION):
 			return {
 				...state,
 				loading: true,
 			};
-		case fulfilled(VIEW_POSTS):
+		case fulfilled(READ_NOTIFICATION):
 			return {
 				...state,
 				loading: false,
-				message: Math.random(),
+				message: action.payload.data.message,
 				data: action.payload.data.data,
 			};
-		case rejected():
+		case rejected(READ_NOTIFICATION):
 			return {
 				...state,
 				loading: false,
-				error: action.payload.response.data.message,
+				errror: action.payload.response.data.message,
 			};
 		default:
 			return state;
 	}
 };
 
-export default viewPostsReducer;
+export default readNotificationReducer;

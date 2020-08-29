@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
 	AppBar,
 	Toolbar,
@@ -9,24 +9,78 @@ import {
 	Menu,
 	Container,
 	Avatar,
+	Popper,
+	Paper,
+	Divider,
+	Grid,
+	CircularProgress,
 } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import HomeIcon from '@material-ui/icons/Home';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import moment from 'moment';
 import { NavLink, Redirect, useHistory } from 'react-router-dom';
 import useStyles from '../../styles/Layouts';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+	getNotificationAction,
+	countNotificationsAction,
+	readNotificationAction,
+	markAllAsReadAction,
+} from '../../redux/actions/NotificationAction';
+import { getUsersAction } from '../../redux/actions/userAction';
 
 const Navigation = () => {
 	const classes = useStyles();
 	const history = useHistory();
+	const dispatch = useDispatch();
+
+	const notifications = useSelector(state => state.notifications);
+	const usersReducer = useSelector(state => state.users);
+	const users = [...usersReducer.data];
+	const countNotifications = useSelector(state => state.countNotifications);
+	const counts = [...countNotifications.data];
+	const messageCount = useSelector(state => state.countNotifications.message);
+	const readNotification = useSelector(
+		state => state.readNotification.data.updatedAt
+	);
+	const markAll = useSelector(state => state.markAll);
+
+	let totalNotifications;
+	if (counts.length > 0) {
+		totalNotifications = counts.filter(
+			c => c.recipientId === parseInt(sessionStorage.getItem('id'))
+		);
+		sessionStorage.setItem('count', totalNotifications.length);
+	}
 
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+	const [anchor, setAnchor] = useState(null);
+	const [open, setOpen] = useState(false);
+	const [placement, setPlacement] = useState();
+	const [page] = useState(1);
+	const [limit, setLimit] = useState(10);
+
+	let NotificationLength;
+	if (notifications.data.rows !== undefined) {
+		NotificationLength = notifications.data.rows.length;
+	}
+
+	const observer = useRef();
+	const lastElement = useCallback(node => {
+		if (observer.current) observer.current.disconnect();
+		observer.current = new IntersectionObserver(entries => {
+			if (entries[0].isIntersecting && NotificationLength === limit) {
+				setLimit(prevLimit => prevLimit + 5);
+			}
+		});
+		if (node) observer.current.observe(node);
+	});
 
 	const isMenuOpen = Boolean(anchorEl);
 	const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -93,6 +147,33 @@ const Navigation = () => {
 		handleMobileMenuClose();
 		location.href = '/login';
 	};
+
+	const handleClickNotification = newPlacement => event => {
+		setAnchor(event.currentTarget);
+		setOpen(prev => placement !== newPlacement || !prev);
+		setPlacement(newPlacement);
+	};
+
+	const handleReadNotification = (notificationId, postId) => {
+		dispatch(readNotificationAction(notificationId));
+		location.replace(`/post/${postId}`);
+	};
+
+	const reReadNotification = postId => {
+		location.replace(`/post/${postId}`);
+	};
+
+	const handleReadAllNotifications = () => {
+		dispatch(markAllAsReadAction());
+	};
+
+	useEffect(() => {
+		if (sessionStorage.getItem('id')) {
+			dispatch(getNotificationAction(page, limit));
+			dispatch(getUsersAction());
+			dispatch(countNotificationsAction());
+		}
+	}, [limit, readNotification, messageCount]);
 
 	const menuId = 'primary-search-account-menu';
 	const renderMenu = (
@@ -226,11 +307,435 @@ const Navigation = () => {
 											<HomeIcon />
 										</NavLink>
 									</IconButton>
-									<IconButton color='inherit'>
-										<Badge badgeContent={100} color='secondary'>
-											<NotificationsIcon />
-										</Badge>
+									<IconButton
+										color='inherit'
+										onClick={handleClickNotification('bottom')}
+									>
+										{totalNotifications !== undefined && (
+											<Badge
+												badgeContent={totalNotifications.length}
+												color='secondary'
+											>
+												<NotificationsIcon />
+											</Badge>
+										)}
 									</IconButton>
+									<Popper open={open} anchorEl={anchor} placement={placement}>
+										{totalNotifications !== undefined &&
+										totalNotifications.length > 10 ? (
+											<Paper
+												style={{
+													marginTop: 15,
+													maxWidth: 350,
+													maxHeight: 400,
+													padding: 10,
+													overflow: 'scroll',
+												}}
+											>
+												<Grid container direction='column' spacing={2}>
+													<Grid item>
+														<Typography
+															component='div'
+															className={classes.markAll}
+															onClick={handleReadAllNotifications}
+														>
+															{markAll.loading ? (
+																<CircularProgress
+																	size={10}
+																	className={classes.circularProgress}
+																/>
+															) : (
+																'Mark all notifications as read'
+															)}
+														</Typography>
+													</Grid>
+													<Grid item>
+														{notifications.data.length === 0 ? (
+															<CircularProgress
+																className={classes.circularProgress}
+															/>
+														) : notifications.data.rows.length === 0 ? (
+															'no notification to show'
+														) : (
+															notifications.data.rows.map(notification => {
+																const user = users.find(
+																	u => u.id === notification.senderId
+																);
+																return (
+																	<Grid
+																		container
+																		direction='row'
+																		spacing={2}
+																		key={notification.id}
+																		ref={lastElement}
+																		style={{ backgroundColor: 'lightgray' }}
+																	>
+																		{notification.read ? (
+																			<>
+																				<Grid
+																					item
+																					md={2}
+																					style={{
+																						backgroundColor: 'white',
+																						cursor: 'pointer',
+																					}}
+																					onClick={() =>
+																						reReadNotification(
+																							notification.postId
+																						)
+																					}
+																				>
+																					<Avatar
+																						src={`${process.env.API_URL}/${
+																							user && user.profilePicture
+																						}`}
+																					></Avatar>
+																				</Grid>
+																				<Grid
+																					item
+																					md={10}
+																					style={{
+																						backgroundColor: 'white',
+																						cursor: 'pointer',
+																					}}
+																					onClick={() =>
+																						reReadNotification(
+																							notification.postId
+																						)
+																					}
+																				>
+																					{notification.type === 'comment' ? (
+																						<Typography
+																							variant='body2'
+																							color='textSecondary'
+																						>
+																							{user && user.firstName}{' '}
+																							{user && user.lastName} commented
+																							on your post. <br />
+																							{moment(
+																								notification.createdAt
+																							).calendar({
+																								sameDay: `[${moment(
+																									notification.createdAt
+																								).fromNow()}]`,
+																								sameElse: `[${moment(
+																									notification.createdAt
+																								).format('Do MMMM YYYY')}]`,
+																							})}
+																						</Typography>
+																					) : (
+																						<Typography
+																							variant='body2'
+																							color='textSecondary'
+																						>
+																							{user && user.firstName}{' '}
+																							{user && user.lastName} liked on
+																							your post. <br />
+																							{moment(
+																								notification.createdAt
+																							).calendar({
+																								sameDay: `[${moment(
+																									notification.createdAt
+																								).fromNow()}]`,
+																								sameElse: `[${moment(
+																									notification.createdAt
+																								).format('Do MMMM YYYY')}]`,
+																							})}
+																						</Typography>
+																					)}
+																					<Divider />
+																				</Grid>
+																			</>
+																		) : (
+																			<>
+																				<Grid
+																					item
+																					md={2}
+																					className={classes.readNotification}
+																					onClick={() =>
+																						handleReadNotification(
+																							notification.id,
+																							notification.postId
+																						)
+																					}
+																				>
+																					<Avatar
+																						src={`${process.env.API_URL}/${
+																							user && user.profilePicture
+																						}`}
+																					></Avatar>
+																				</Grid>
+																				<Grid
+																					item
+																					md={10}
+																					className={classes.readNotification}
+																					onClick={() =>
+																						handleReadNotification(
+																							notification.id,
+																							notification.postId
+																						)
+																					}
+																				>
+																					{notification.type === 'comment' ? (
+																						<Typography
+																							variant='body2'
+																							color='textSecondary'
+																						>
+																							{user && user.firstName}{' '}
+																							{user && user.lastName} commented
+																							on your post. <br />
+																							{moment(
+																								notification.createdAt
+																							).calendar({
+																								sameDay: `[${moment(
+																									notification.createdAt
+																								).fromNow()}]`,
+																								sameElse: `[${moment(
+																									notification.createdAt
+																								).format('Do MMMM YYYY')}]`,
+																							})}
+																						</Typography>
+																					) : (
+																						<Typography
+																							variant='body2'
+																							color='textSecondary'
+																						>
+																							{user && user.firstName}{' '}
+																							{user && user.lastName} liked on
+																							your post. <br />
+																							{moment(
+																								notification.createdAt
+																							).calendar({
+																								sameDay: `[${moment(
+																									notification.createdAt
+																								).fromNow()}]`,
+																								sameElse: `[${moment(
+																									notification.createdAt
+																								).format('Do MMMM YYYY')}]`,
+																							})}
+																						</Typography>
+																					)}
+																					<Divider />
+																				</Grid>
+																			</>
+																		)}
+																	</Grid>
+																);
+															})
+														)}
+														{notifications.loading && (
+															<CircularProgress
+																className={classes.circularProgress}
+															/>
+														)}
+													</Grid>
+												</Grid>
+											</Paper>
+										) : (
+											<Paper
+												style={{
+													marginTop: 15,
+													maxWidth: 350,
+													maxHeight: 400,
+													padding: 10,
+												}}
+											>
+												<Grid container direction='column' spacing={2}>
+													<Grid item>
+														<Typography
+															component='div'
+															className={classes.markAll}
+															onClick={handleReadAllNotifications}
+														>
+															{markAll.loading ? (
+																<CircularProgress
+																	size={10}
+																	className={classes.circularProgress}
+																/>
+															) : (
+																'Mark all notifications as read'
+															)}
+														</Typography>
+													</Grid>
+													<Grid item>
+														{notifications.data.length === 0 ? (
+															<CircularProgress
+																className={classes.circularProgress}
+															/>
+														) : notifications.data.rows.length === 0 ? (
+															'no notification to show'
+														) : (
+															notifications.data.rows.map(notification => {
+																const user = users.find(
+																	u => u.id === notification.senderId
+																);
+																return (
+																	<Grid
+																		container
+																		direction='row'
+																		spacing={2}
+																		key={notification.id}
+																		ref={lastElement}
+																		style={{ backgroundColor: 'lightgray' }}
+																	>
+																		{notification.read ? (
+																			<>
+																				<Grid
+																					item
+																					md={2}
+																					style={{
+																						backgroundColor: 'white',
+																						cursor: 'pointer',
+																					}}
+																					onClick={() =>
+																						reReadNotification(
+																							notification.postId
+																						)
+																					}
+																				>
+																					<Avatar
+																						src={`${process.env.API_URL}/${
+																							user && user.profilePicture
+																						}`}
+																					></Avatar>
+																				</Grid>
+																				<Grid
+																					item
+																					md={10}
+																					style={{
+																						backgroundColor: 'white',
+																						cursor: 'pointer',
+																					}}
+																					onClick={() =>
+																						reReadNotification(
+																							notification.postId
+																						)
+																					}
+																				>
+																					{notification.type === 'comment' ? (
+																						<Typography
+																							variant='body2'
+																							color='textSecondary'
+																						>
+																							{user && user.firstName}{' '}
+																							{user && user.lastName} commented
+																							on your post. <br />
+																							{moment(
+																								notification.createdAt
+																							).calendar({
+																								sameDay: `[${moment(
+																									notification.createdAt
+																								).fromNow()}]`,
+																								sameElse: `[${moment(
+																									notification.createdAt
+																								).format('Do MMMM YYYY')}]`,
+																							})}
+																						</Typography>
+																					) : (
+																						<Typography
+																							variant='body2'
+																							color='textSecondary'
+																						>
+																							{user && user.firstName}{' '}
+																							{user && user.lastName} liked on
+																							your post. <br />
+																							{moment(
+																								notification.createdAt
+																							).calendar({
+																								sameDay: `[${moment(
+																									notification.createdAt
+																								).fromNow()}]`,
+																								sameElse: `[${moment(
+																									notification.createdAt
+																								).format('Do MMMM YYYY')}]`,
+																							})}
+																						</Typography>
+																					)}
+																					<Divider />
+																				</Grid>
+																			</>
+																		) : (
+																			<>
+																				<Grid
+																					item
+																					md={2}
+																					className={classes.readNotification}
+																					onClick={() =>
+																						handleReadNotification(
+																							notification.id,
+																							notification.postId
+																						)
+																					}
+																				>
+																					<Avatar
+																						src={`${process.env.API_URL}/${
+																							user && user.profilePicture
+																						}`}
+																					></Avatar>
+																				</Grid>
+																				<Grid
+																					item
+																					md={10}
+																					className={classes.readNotification}
+																					onClick={() =>
+																						handleReadNotification(
+																							notification.id,
+																							notification.postId
+																						)
+																					}
+																				>
+																					{notification.type === 'comment' ? (
+																						<Typography
+																							variant='body2'
+																							color='textSecondary'
+																						>
+																							{user && user.firstName}{' '}
+																							{user && user.lastName} commented
+																							on your post. <br />
+																							{moment(
+																								notification.createdAt
+																							).calendar({
+																								sameDay: `[${moment(
+																									notification.createdAt
+																								).fromNow()}]`,
+																								sameElse: `[${moment(
+																									notification.createdAt
+																								).format('Do MMMM YYYY')}]`,
+																							})}
+																						</Typography>
+																					) : (
+																						<Typography
+																							variant='body2'
+																							color='textSecondary'
+																						>
+																							{user && user.firstName}{' '}
+																							{user && user.lastName} liked on
+																							your post. <br />
+																							{moment(
+																								notification.createdAt
+																							).calendar({
+																								sameDay: `[${moment(
+																									notification.createdAt
+																								).fromNow()}]`,
+																								sameElse: `[${moment(
+																									notification.createdAt
+																								).format('Do MMMM YYYY')}]`,
+																							})}
+																						</Typography>
+																					)}
+																					<Divider />
+																				</Grid>
+																			</>
+																		)}
+																	</Grid>
+																);
+															})
+														)}
+													</Grid>
+												</Grid>
+											</Paper>
+										)}
+									</Popper>
 									<IconButton
 										edge='end'
 										aria-label='account of current user'

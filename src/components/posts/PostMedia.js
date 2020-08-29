@@ -36,7 +36,7 @@ const PostMedia = ({ userId }) => {
 	return (
 		<div className={classes.rootMedia}>
 			{ownPosts.data.length === 0 ? (
-				<CircularProgress className={classes.circularProgress} />
+				<CircularProgress size={10} className={classes.circularProgress} />
 			) : ownPosts.data.rows.length === 0 ? (
 				<span className={classes.noPostMessage}>
 					No photos or videos to show
@@ -76,7 +76,7 @@ const PostMedia = ({ userId }) => {
 				))
 			)}
 			{ownPosts.loading && (
-				<CircularProgress className={classes.circularProgress} />
+				<CircularProgress size={10} className={classes.circularProgress} />
 			)}
 		</div>
 	);

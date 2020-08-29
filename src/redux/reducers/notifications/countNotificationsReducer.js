@@ -1,5 +1,5 @@
 import { pending, fulfilled, rejected } from '../../../helpers/utils';
-import { VIEW_POSTS } from '../../actionType';
+import { COUNT_NOTIFICATIONS } from '../../actionType';
 
 const initialState = {
 	message: '',
@@ -8,29 +8,29 @@ const initialState = {
 	data: [],
 };
 
-const viewPostsReducer = (state = initialState, action) => {
+const countNotificationsReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case pending(VIEW_POSTS):
+		case pending(COUNT_NOTIFICATIONS):
 			return {
 				...state,
 				loading: true,
 			};
-		case fulfilled(VIEW_POSTS):
+		case fulfilled(COUNT_NOTIFICATIONS):
 			return {
 				...state,
 				loading: false,
 				message: Math.random(),
 				data: action.payload.data.data,
 			};
-		case rejected():
+		case rejected(COUNT_NOTIFICATIONS):
 			return {
 				...state,
 				loading: false,
-				error: action.payload.response.data.message,
+				errror: action.payload.response.data.message,
 			};
 		default:
 			return state;
 	}
 };
 
-export default viewPostsReducer;
+export default countNotificationsReducer;

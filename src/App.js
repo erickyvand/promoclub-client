@@ -15,6 +15,7 @@ import Feed from './components/posts/Feed';
 import Profile from './components/users/Profile';
 import Footer from './components/layouts/Footer';
 import EditPost from './components/posts/EditPost';
+import Post from './components/posts/Post';
 
 const App = () => {
 	return (
@@ -37,6 +38,7 @@ const App = () => {
 							component={Profile}
 						/>
 						<Route path='/feed/post/edit/:postId' exact component={EditPost} />
+						<Route path='/post/:postId' exact component={Post} />
 						<Route exact component={PageNotFound} />
 					</Switch>
 				</div>

@@ -45,8 +45,9 @@ const EditPost = ({ postId, userId }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
-	const posts = useSelector(state => state.viewPosts);
+	const posts = useSelector(state => state.countOwnPosts);
 	const editPost = useSelector(state => state.editPost);
+	const editPostMessage = useSelector(state => state.editPost.data.updatedAt);
 
 	const [showIcon, setShowIcon] = useState(false);
 	const [unlock, setUnlock] = useState(false);
@@ -66,7 +67,7 @@ const EditPost = ({ postId, userId }) => {
 	};
 
 	const handleEdit = id => {
-		const singlePost = posts.data.rows.find(p => p.id === id);
+		const singlePost = posts.data.find(p => p.id === id);
 		setPost(singlePost.post === 'undefined' ? '' : singlePost.post);
 		setFile(singlePost.mediaFile);
 		setFileType(singlePost.fileType);
@@ -119,7 +120,7 @@ const EditPost = ({ postId, userId }) => {
 		if (location.pathname === newPath) {
 			handleEdit();
 		}
-	}, []);
+	}, [editPostMessage]);
 
 	return (
 		<div>

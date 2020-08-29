@@ -1,30 +1,28 @@
 import { pending, fulfilled, rejected } from '../../../helpers/utils';
-import { SIGNUP } from '../../actionType';
+import { SINGLE_POST } from '../../actionType';
 
 const initialState = {
 	message: '',
-	error: '',
 	loading: false,
-	redirect: false,
+	error: '',
 	data: {},
 };
 
-const signupReducer = (state = initialState, action) => {
+const singlePostReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case pending(SIGNUP):
+		case pending(SINGLE_POST):
 			return {
 				...state,
 				loading: true,
 			};
-		case fulfilled(SIGNUP):
+		case fulfilled(SINGLE_POST):
 			return {
 				...state,
-				message: action.payload.data.message,
 				loading: false,
-				redirect: true,
+				message: action.payload.data.message,
 				data: action.payload.data.data,
 			};
-		case rejected(SIGNUP):
+		case rejected(SINGLE_POST):
 			return {
 				...state,
 				loading: false,
@@ -35,4 +33,4 @@ const signupReducer = (state = initialState, action) => {
 	}
 };
 
-export default signupReducer;
+export default singlePostReducer;

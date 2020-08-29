@@ -46,7 +46,7 @@ const ViewComments = ({ postId, commentMessage }) => {
 	return (
 		<div>
 			{viewComments.data.length === 0 ? (
-				<CircularProgress className={classes.circularProgress} />
+				<CircularProgress size={10} className={classes.circularProgress} />
 			) : viewComments.data.rows.length === 0 ? (
 				''
 			) : (
@@ -72,7 +72,7 @@ const ViewComments = ({ postId, commentMessage }) => {
 								variant='subtitle2'
 								component='div'
 								style={{
-									backgroundColor: '#e4e8ed',
+									backgroundColor: '#f0f1f2',
 									padding: 10,
 									borderRadius: 20,
 									overflow: 'hidden',
@@ -119,7 +119,7 @@ const ViewComments = ({ postId, commentMessage }) => {
 				))
 			)}
 			{viewComments.loading && (
-				<CircularProgress className={classes.circularProgress} />
+				<CircularProgress size={10} className={classes.circularProgress} />
 			)}
 		</div>
 	);

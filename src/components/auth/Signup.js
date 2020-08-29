@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Grid, Paper, Typography, TextField, Button } from '@material-ui/core';
 import { Form, Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,7 +6,7 @@ import { signupAction } from '../../redux/actions/authAction';
 import useStyles from '../../styles/user';
 import { signupSchema } from '../../validations/userValidation';
 import Footer from '../layouts/Footer';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 const handleDisable = (props, signup) => {
 	if (
@@ -33,6 +33,15 @@ const Signup = () => {
 	const handleSubmitSignup = values => {
 		dispatch(signupAction(values));
 	};
+
+	useEffect(() => {
+		document.title = 'Promoclub | Signup';
+	}, []);
+
+	if (signup.redirect) {
+		return <Redirect to='/login' />;
+	}
+
 	return (
 		<div className={classes.root}>
 			<Grid container direction='row' justify='center'>
