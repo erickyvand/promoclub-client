@@ -118,6 +118,7 @@ const CreatePost = ({ message }) => {
 		setPost();
 		setFile('');
 		setIcon();
+		setMediaFile();
 	};
 
 	// return focus to the button when we transitioned from !open -> open

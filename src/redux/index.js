@@ -19,6 +19,13 @@ import likePostReducer from './reducers/posts/likePostReducer';
 import countLikeReducer from './reducers/posts/countLikeReducer';
 import unlikePostReducer from './reducers/posts/unlikePostReducer';
 import countUnlikeReducer from './reducers/posts/countUnlikeReducer';
+import getNotificationReducer from './reducers/notifications/getNotificationReducer';
+import usersReducer from './reducers/users/usersReducers';
+import countNotificationsReducer from './reducers/notifications/countNotificationsReducer';
+import readNotificationReducer from './reducers/notifications/readNotificationReducer';
+import countOwnPostsReducer from './reducers/posts/countOwnPostsReducer';
+import singlePostReducer from './reducers/posts/singlePostReducer';
+import markAllAsReadReducer from './reducers/notifications/markAllAsReadReducer';
 
 const rootReducer = combineReducers({
 	signup: signupReducer,
@@ -41,6 +48,13 @@ const rootReducer = combineReducers({
 	countLike: countLikeReducer,
 	unlikePost: unlikePostReducer,
 	countUnlike: countUnlikeReducer,
+	notifications: getNotificationReducer,
+	users: usersReducer,
+	countNotifications: countNotificationsReducer,
+	readNotification: readNotificationReducer,
+	countOwnPosts: countOwnPostsReducer,
+	singlePost: singlePostReducer,
+	markAll: markAllAsReadReducer,
 });
 
 export default rootReducer;

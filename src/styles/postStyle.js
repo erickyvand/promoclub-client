@@ -36,7 +36,6 @@ const useStyles = makeStyles(theme => ({
 		display: 'block',
 		margin: 'auto',
 		border: 'none',
-		cursor: 'pointer',
 	},
 	videoPost: {
 		width: 'auto',
@@ -44,7 +43,6 @@ const useStyles = makeStyles(theme => ({
 		display: 'block',
 		margin: 'auto',
 		border: 'none',
-		cursor: 'pointer',
 	},
 	nameTitle: {
 		textDecoration: 'none',
@@ -69,6 +67,12 @@ const useStyles = makeStyles(theme => ({
 	circularProgress: {
 		display: 'block',
 		margin: 'auto',
+	},
+	cardContent: {
+		cursor: 'pointer',
+		'&:hover': {
+			backgroundColor: '#f0f1f2'
+		}
 	},
 	// Comments styles
 	commentRoot: {

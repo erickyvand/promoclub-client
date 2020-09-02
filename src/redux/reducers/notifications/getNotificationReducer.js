@@ -1,38 +1,36 @@
 import { pending, fulfilled, rejected } from '../../../helpers/utils';
-import { SIGNUP } from '../../actionType';
+import { NOTIFICATIONS } from '../../actionType';
 
 const initialState = {
 	message: '',
-	error: '',
 	loading: false,
-	redirect: false,
-	data: {},
+	error: '',
+	data: [],
 };
 
-const signupReducer = (state = initialState, action) => {
+const getNotificationReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case pending(SIGNUP):
+		case pending(NOTIFICATIONS):
 			return {
 				...state,
 				loading: true,
 			};
-		case fulfilled(SIGNUP):
+		case fulfilled(NOTIFICATIONS):
 			return {
 				...state,
-				message: action.payload.data.message,
 				loading: false,
-				redirect: true,
+				message: action.payload.data.message,
 				data: action.payload.data.data,
 			};
-		case rejected(SIGNUP):
+		case rejected(NOTIFICATIONS):
 			return {
 				...state,
 				loading: false,
-				error: action.payload.response.data.message,
+				errror: action.payload.response.data.message,
 			};
 		default:
 			return state;
 	}
 };
 
-export default signupReducer;
+export default getNotificationReducer;

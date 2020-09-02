@@ -98,6 +98,7 @@ const CreateSidePost = () => {
 		setPost();
 		setFile('');
 		setIcon();
+		setMediaFile();
 
 		setAllow(false);
 	};

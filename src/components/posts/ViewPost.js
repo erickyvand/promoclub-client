@@ -32,7 +32,7 @@ const ViewPost = ({ postedMessage }) => {
 	const dispatch = useDispatch();
 
 	const viewPosts = useSelector(state => state.viewPosts);
-	const message = useSelector(state => state.viewPostsmessage);
+	const message = useSelector(state => state.viewPosts.message);
 	const postMessage = useSelector(state => state.postReducer.message);
 	const updatedMessage = useSelector(state => state.editPost.data.updatedAt);
 	const allComments = useSelector(state => state.allComments);
@@ -66,11 +66,8 @@ const ViewPost = ({ postedMessage }) => {
 	};
 
 	useEffect(() => {
-		const interval = setInterval(() => {
-			dispatch(viewPostsAction(page, limit));
-			dispatch(allCommentsAction());
-		}, 3000);
-		return () => clearInterval(interval);
+		dispatch(viewPostsAction(page, limit));
+		dispatch(allCommentsAction());
 	}, [
 		message,
 		postMessage,
@@ -187,34 +184,39 @@ const ViewPost = ({ postedMessage }) => {
 									)}]`,
 								})}
 							/>
-							<CardContent>
-								<Typography variant='subtitle2' component='div'>
-									{post.post === 'undefined' ? (
-										''
+							<Link
+								to={`/post/${post.id}`}
+								style={{ color: '#454647', textDecoration: 'none' }}
+							>
+								<CardContent className={classes.cardContent}>
+									<Typography variant='subtitle2'>
+										{post.post === 'undefined' ? (
+											''
+										) : (
+											<ReadMore text={post.post} maxShowCharacter={200} />
+										)}
+									</Typography>
+									{post.fileType === 'image/jpg' ||
+									post.fileType === 'image/jpeg' ||
+									post.fileType === 'image/png' ||
+									post.fileType === 'image/gif' ? (
+										<img
+											src={`${process.env.API_URL}/${post.mediaFile}`}
+											alt=''
+											className={classes.imagePost}
+										/>
+									) : post.fileType === 'video/mp4' ||
+									  post.fileType === 'video/x-m4v' ? (
+										<video
+											src={`${process.env.API_URL}/${post.mediaFile}`}
+											controls
+											className={classes.videoPost}
+										/>
 									) : (
-										<ReadMore text={post.post} maxShowCharacter={200} />
+										''
 									)}
-								</Typography>
-							</CardContent>
-							{post.fileType === 'image/jpg' ||
-							post.fileType === 'image/jpeg' ||
-							post.fileType === 'image/png' ||
-							post.fileType === 'image/gif' ? (
-								<img
-									src={`${process.env.API_URL}/${post.mediaFile}`}
-									alt=''
-									className={classes.imagePost}
-								/>
-							) : post.fileType === 'video/mp4' ||
-							  post.fileType === 'video/x-m4v' ? (
-								<video
-									src={`${process.env.API_URL}/${post.mediaFile}`}
-									controls
-									className={classes.videoPost}
-								/>
-							) : (
-								''
-							)}
+								</CardContent>
+							</Link>
 							<CardActions disableSpacing>
 								<LikePost postId={post.id} />
 								<UnlikePost postId={post.id} />
@@ -251,7 +253,7 @@ const ViewPost = ({ postedMessage }) => {
 				})
 			)}
 			{viewPosts.loading && (
-				<CircularProgress className={classes.circularProgress} />
+				<CircularProgress size={10} className={classes.circularProgress} />
 			)}
 		</div>
 	);

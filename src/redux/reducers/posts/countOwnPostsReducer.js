@@ -1,30 +1,28 @@
 import { pending, fulfilled, rejected } from '../../../helpers/utils';
-import { SIGNUP } from '../../actionType';
+import { COUNT_OWN_POSTS } from '../../actionType';
 
 const initialState = {
 	message: '',
-	error: '',
 	loading: false,
-	redirect: false,
-	data: {},
+	error: '',
+	data: [],
 };
 
-const signupReducer = (state = initialState, action) => {
+const countOwnPostsReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case pending(SIGNUP):
+		case pending(COUNT_OWN_POSTS):
 			return {
 				...state,
 				loading: true,
 			};
-		case fulfilled(SIGNUP):
+		case fulfilled(COUNT_OWN_POSTS):
 			return {
 				...state,
-				message: action.payload.data.message,
 				loading: false,
-				redirect: true,
+				message: Math.random(),
 				data: action.payload.data.data,
 			};
-		case rejected(SIGNUP):
+		case rejected(COUNT_OWN_POSTS):
 			return {
 				...state,
 				loading: false,
@@ -35,4 +33,4 @@ const signupReducer = (state = initialState, action) => {
 	}
 };
 
-export default signupReducer;
+export default countOwnPostsReducer;

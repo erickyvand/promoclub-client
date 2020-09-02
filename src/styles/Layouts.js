@@ -66,6 +66,23 @@ const useStyles = makeStyles(theme => ({
 	card: {
 		minHeight: '450px',
 	},
+	circularProgress: {
+		display: 'block',
+		margin: 'auto',
+	},
+	readNotification: {
+		cursor: 'pointer',
+		'&:hover': {
+			backgroundColor: 'white',
+		},
+	},
+	markAll: {
+		cursor: 'pointer',
+		color: '#126eb0',
+		'&:hover': {
+			textDecoration: 'underline',
+		},
+	},
 }));
 
 export default useStyles;

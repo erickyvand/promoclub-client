@@ -66,8 +66,13 @@ const Profile = props => {
 	};
 
 	useEffect(() => {
+		document.title = `(${sessionStorage.getItem(
+			'count'
+		)}) Promoclub | ${sessionStorage.getItem(
+			'firstName'
+		)} ${sessionStorage.getItem('lastName')}`;
 		dispatch(profileAction(userId));
-	}, [userId, successMessage]);
+	}, [userId, successMessage, sessionStorage.getItem('count')]);
 
 	return (
 		<div>
