@@ -17,7 +17,8 @@ import {
 	Avatar,
 } from '@material-ui/core';
 import 'emoji-mart/css/emoji-mart.css';
-import { Picker, Emoji } from 'emoji-mart';
+import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
+import { Picker } from 'emoji-mart';
 import useStyles from '../../styles/postStyle';
 import { useSelector, useDispatch } from 'react-redux';
 import { editPostAction } from '../../redux/actions/postAction';
@@ -231,7 +232,7 @@ const EditPost = ({ postId, userId }) => {
 									<Grid item>
 										<Tooltip title='Insert an emoji'>
 											<IconButton onClick={OpenEmojiPicker}>
-												<Emoji emoji={{ id: 'smiley', skin: 3 }} size={22} />
+												<InsertEmoticonIcon />
 											</IconButton>
 										</Tooltip>
 									</Grid>

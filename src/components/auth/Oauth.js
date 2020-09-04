@@ -13,7 +13,8 @@ const Oauth = () => {
 	sessionStorage.setItem('profilePicture', decoded.profilePicture);
 	sessionStorage.setItem('role', decoded.role);
 	sessionStorage.setItem('token', token);
-	return <Redirect to='/feed' />;
+	// return <Redirect to='/feed' />;
+	location.replace('/feed');
 };
 
 export default Oauth;

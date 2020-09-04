@@ -75,8 +75,10 @@ const PostMedia = ({ userId }) => {
 					</div>
 				))
 			)}
-			{ownPosts.loading && (
+			{ownPosts.loading ? (
 				<CircularProgress size={10} className={classes.circularProgress} />
+			) : (
+				''
 			)}
 		</div>
 	);

@@ -12,8 +12,9 @@ import {
 	Tooltip,
 	IconButton,
 } from '@material-ui/core';
+import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import 'emoji-mart/css/emoji-mart.css';
-import { Picker, Emoji } from 'emoji-mart';
+import { Picker } from 'emoji-mart';
 import useStyles from '../../styles/postStyle';
 import { useSelector, useDispatch } from 'react-redux';
 import CloseIcon from '@material-ui/icons/Close';
@@ -107,7 +108,7 @@ const EditComment = ({ commentId, postId, userId }) => {
 						<Grid item>
 							<Tooltip title='Insert an emoji'>
 								<IconButton onClick={openEmojiPicker}>
-									<Emoji emoji={{ id: 'smiley', skin: 3 }} size={22} />
+									<InsertEmoticonIcon />
 								</IconButton>
 							</Tooltip>
 						</Grid>

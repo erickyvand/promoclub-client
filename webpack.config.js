@@ -3,16 +3,12 @@ const webpack = require('webpack');
 const path = require('path');
 require('dotenv').config();
 module.exports = {
-	context: __dirname,
 	entry: './src/index.js',
-	output: {
-		path: path.resolve(__dirname, 'dist'),
-		filename: 'main.js',
-		publicPath: '/',
-	},
-	devServer: {
-		historyApiFallback: true,
-	},
+  output: {
+    path: path.join(__dirname, 'public'),
+		filename: 'bundle.js',
+		publicPath: '/'
+  },
 	module: {
 		rules: [
 			{
@@ -29,6 +25,10 @@ module.exports = {
 			},
 		],
 	},
+	devtool: 'cheap-module-eval-source-map',
+	devServer: {
+		historyApiFallback: true,
+	},
 	plugins: [
 		new HtmlWebPackPlugin({
 			template: path.resolve(__dirname, 'public/index.html'),
@@ -41,4 +41,7 @@ module.exports = {
 			},
 		}),
 	],
+	performance: {
+    hints: false
+  }
 };

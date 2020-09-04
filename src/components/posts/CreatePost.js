@@ -17,8 +17,9 @@ import {
 import Alert from '@material-ui/lab/Alert';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import CloseIcon from '@material-ui/icons/Close';
+import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import 'emoji-mart/css/emoji-mart.css';
-import { Picker, Emoji } from 'emoji-mart';
+import { Picker } from 'emoji-mart';
 import useStyles from '../../styles/postStyle';
 import { postAction } from '../../redux/actions/postAction';
 
@@ -217,7 +218,7 @@ const CreatePost = ({ message }) => {
 								ref={anchorRef}
 								onClick={handleToggle}
 							>
-								<Emoji emoji={{ id: 'smiley', skin: 3 }} size={22} />
+								<InsertEmoticonIcon />
 							</IconButton>
 							<Popper open={open} anchorEl={anchorRef.current}>
 								<ClickAwayListener onClickAway={handleClose}>

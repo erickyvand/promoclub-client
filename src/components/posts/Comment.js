@@ -10,7 +10,8 @@ import {
 	MenuList,
 	Typography,
 } from '@material-ui/core';
-import { Picker, Emoji } from 'emoji-mart';
+import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
+import { Picker } from 'emoji-mart';
 import useStyles from '../../styles/postStyle';
 import { commentAction } from '../../redux/actions/postAction';
 import ViewComments from './ViewComments';
@@ -112,7 +113,7 @@ const Comment = ({ postId }) => {
 						onClick={handleToggle}
 						className={classes.emoji}
 					>
-						<Emoji emoji={{ id: 'smiley', skin: 3 }} size={22} />
+						<InsertEmoticonIcon />
 					</IconButton>
 					<Popper open={open} anchorEl={anchorRef.current}>
 						<ClickAwayListener onClickAway={handleClose}>

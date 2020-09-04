@@ -182,8 +182,10 @@ const OwnPosts = ({ userId }) => {
 					);
 				})
 			)}
-			{ownPosts.loading && (
+			{postLength !== limit && ownPosts.loading ? (
 				<CircularProgress size={10} className={classes.circularProgress} />
+			) : (
+				''
 			)}
 		</div>
 	);

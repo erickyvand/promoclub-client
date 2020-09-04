@@ -17,6 +17,7 @@ import {
 } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
+import Autocomplete from 'react-autocomplete';
 import HomeIcon from '@material-ui/icons/Home';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
@@ -33,6 +34,7 @@ import {
 	markAllAsReadAction,
 } from '../../redux/actions/NotificationAction';
 import { getUsersAction } from '../../redux/actions/userAction';
+import { searchAction } from '../../redux/actions/searchAction';
 
 const Navigation = () => {
 	const classes = useStyles();
@@ -49,6 +51,7 @@ const Navigation = () => {
 		state => state.readNotification.data.updatedAt
 	);
 	const markAll = useSelector(state => state.markAll);
+	const search = useSelector(state => state.search);
 
 	let totalNotifications;
 	if (counts.length > 0) {
@@ -65,10 +68,17 @@ const Navigation = () => {
 	const [placement, setPlacement] = useState();
 	const [page] = useState(1);
 	const [limit, setLimit] = useState(10);
+	const [display, setDisplay] = useState(false);
+	const [value, setValue] = useState('');
 
 	let NotificationLength;
 	if (notifications.data.rows !== undefined) {
 		NotificationLength = notifications.data.rows.length;
+	}
+
+	let searchLength;
+	if (search.data.rows !== undefined) {
+		searchLength = search.data.rows.length;
 	}
 
 	const observer = useRef();
@@ -76,6 +86,10 @@ const Navigation = () => {
 		if (observer.current) observer.current.disconnect();
 		observer.current = new IntersectionObserver(entries => {
 			if (entries[0].isIntersecting && NotificationLength === limit) {
+				setLimit(prevLimit => prevLimit + 5);
+			}
+
+			if (entries[0].isIntersecting && searchLength === limit) {
 				setLimit(prevLimit => prevLimit + 5);
 			}
 		});
@@ -167,11 +181,23 @@ const Navigation = () => {
 		dispatch(markAllAsReadAction());
 	};
 
+	const handleDisplayContent = e => {
+		setDisplay(true);
+		setValue(e.target.value);
+		dispatch(searchAction(e.target.value, page, limit));
+	};
+
+	const handleViewUser = (id, firstName, lastName) => {
+		location.replace(`${firstName}${lastName}${id}`.toLowerCase());
+		setDisplay(false);
+	};
+
 	useEffect(() => {
 		if (sessionStorage.getItem('id')) {
 			dispatch(getNotificationAction(page, limit));
 			dispatch(getUsersAction());
 			dispatch(countNotificationsAction());
+			dispatch(searchAction(value, page, limit));
 		}
 	}, [limit, readNotification, messageCount]);
 
@@ -290,9 +316,58 @@ const Navigation = () => {
 										root: classes.inputRoot,
 										input: classes.inputInput,
 									}}
+									value={value}
 									inputProps={{ 'aria-label': 'search' }}
+									onChange={handleDisplayContent}
 								/>
 							</div>
+						)}
+						{display && value !== '' ? (
+							<Paper className={classes.dropDown}>
+								<Grid container direction='column' spacing={1}>
+									{search.data.length === 0 ? (
+										<CircularProgress
+											size={10}
+											className={classes.circularProgress}
+										/>
+									) : search.data.rows.length === 0 ? (
+										'No search found'
+									) : (
+										search.data.rows.map(result => (
+											<Grid item key={result.id} ref={lastElement}>
+												<Grid
+													container
+													direction='row'
+													alignItems='center'
+													spacing={1}
+													className={classes.searchContainer}
+													onClick={() =>
+														handleViewUser(
+															result.id,
+															result.firstName,
+															result.lastName
+														)
+													}
+												>
+													<Grid item>
+														<Avatar
+															src={`${process.env.API_URL}/${result.profilePicture}`}
+															variant='square'
+														></Avatar>
+													</Grid>
+													<Grid item>
+														<Typography>
+															{result.firstName} {result.lastName}
+														</Typography>
+													</Grid>
+												</Grid>
+											</Grid>
+										))
+									)}
+								</Grid>
+							</Paper>
+						) : (
+							''
 						)}
 						<div className={classes.grow} />
 						<div className={classes.sectionDesktop}>
@@ -321,8 +396,8 @@ const Navigation = () => {
 										)}
 									</IconButton>
 									<Popper open={open} anchorEl={anchor} placement={placement}>
-										{totalNotifications !== undefined &&
-										totalNotifications.length > 10 ? (
+										{notifications.data.rows !== undefined &&
+										notifications.data.rows.length > 10 ? (
 											<Paper
 												style={{
 													marginTop: 15,
@@ -352,6 +427,7 @@ const Navigation = () => {
 													<Grid item>
 														{notifications.data.length === 0 ? (
 															<CircularProgress
+																size={10}
 																className={classes.circularProgress}
 															/>
 														) : notifications.data.rows.length === 0 ? (
@@ -429,8 +505,8 @@ const Navigation = () => {
 																							color='textSecondary'
 																						>
 																							{user && user.firstName}{' '}
-																							{user && user.lastName} liked on
-																							your post. <br />
+																							{user && user.lastName} liked your
+																							post. <br />
 																							{moment(
 																								notification.createdAt
 																							).calendar({
@@ -501,8 +577,8 @@ const Navigation = () => {
 																							color='textSecondary'
 																						>
 																							{user && user.firstName}{' '}
-																							{user && user.lastName} liked on
-																							your post. <br />
+																							{user && user.lastName} liked your
+																							post. <br />
 																							{moment(
 																								notification.createdAt
 																							).calendar({
@@ -522,11 +598,6 @@ const Navigation = () => {
 																	</Grid>
 																);
 															})
-														)}
-														{notifications.loading && (
-															<CircularProgress
-																className={classes.circularProgress}
-															/>
 														)}
 													</Grid>
 												</Grid>
@@ -560,6 +631,7 @@ const Navigation = () => {
 													<Grid item>
 														{notifications.data.length === 0 ? (
 															<CircularProgress
+																size={10}
 																className={classes.circularProgress}
 															/>
 														) : notifications.data.rows.length === 0 ? (
@@ -637,8 +709,8 @@ const Navigation = () => {
 																							color='textSecondary'
 																						>
 																							{user && user.firstName}{' '}
-																							{user && user.lastName} liked on
-																							your post. <br />
+																							{user && user.lastName} liked your
+																							post. <br />
 																							{moment(
 																								notification.createdAt
 																							).calendar({
@@ -709,8 +781,8 @@ const Navigation = () => {
 																							color='textSecondary'
 																						>
 																							{user && user.firstName}{' '}
-																							{user && user.lastName} liked on
-																							your post. <br />
+																							{user && user.lastName} liked your
+																							post. <br />
 																							{moment(
 																								notification.createdAt
 																							).calendar({

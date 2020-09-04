@@ -37,6 +37,23 @@ const useStyles = makeStyles(theme => ({
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
+	searchContainer: {
+		cursor: 'pointer',
+		'&:hover': {
+			backgroundColor: 'lightgray'
+		}
+	},
+	dropDown: {
+		position: 'absolute',
+		padding: 10,
+		width: '22%',
+		maxHeight: 450,
+		overflow: 'scroll',
+		zIndex: 99,
+		top: '100%',
+		left: 48,
+		right: 0,
+	},
 	inputRoot: {
 		color: 'inherit',
 	},

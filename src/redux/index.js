@@ -26,6 +26,7 @@ import readNotificationReducer from './reducers/notifications/readNotificationRe
 import countOwnPostsReducer from './reducers/posts/countOwnPostsReducer';
 import singlePostReducer from './reducers/posts/singlePostReducer';
 import markAllAsReadReducer from './reducers/notifications/markAllAsReadReducer';
+import searchReducer from './reducers/searchReducer.js/searchReducer';
 
 const rootReducer = combineReducers({
 	signup: signupReducer,
@@ -55,6 +56,7 @@ const rootReducer = combineReducers({
 	countOwnPosts: countOwnPostsReducer,
 	singlePost: singlePostReducer,
 	markAll: markAllAsReadReducer,
+	search: searchReducer,
 });
 
 export default rootReducer;
