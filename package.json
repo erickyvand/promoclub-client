@@ -33,6 +33,7 @@
     "moment": "^2.27.0",
     "query-string": "^6.13.1",
     "react": "^16.13.1",
+    "react-autocomplete": "^1.8.1",
     "react-dom": "^16.13.1",
     "react-fade-in": "^1.1.0",
     "react-linkify": "^1.0.0-alpha",

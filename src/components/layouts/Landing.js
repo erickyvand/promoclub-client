@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
 	Grid,
 	Typography,
@@ -12,6 +12,11 @@ import useStyles from '../../styles/Layouts';
 
 const Landing = () => {
 	const classes = useStyles();
+
+	useEffect(() => {
+		document.title = 'Promoclub';
+	}, []);
+
 	return (
 		<div>
 			<FadeIn delay='500'>

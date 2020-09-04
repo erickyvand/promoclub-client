@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useStyles from '../../styles/user';
 import {
 	Grid,
@@ -76,6 +76,11 @@ const Login = () => {
 		setOpen(false);
 		setUnlock(false);
 	};
+
+	useEffect(() => {
+		document.title = 'Promoclub | Login';
+	}, []);
+
 	return (
 		<div className={classes.root}>
 			<Grid container direction='row' justify='center'>

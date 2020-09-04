@@ -26,3 +26,4 @@ export const READ_NOTIFICATION = 'READ_NOTIFICATION';
 export const COUNT_OWN_POSTS = 'COUNT_OWN_POSTS';
 export const SINGLE_POST = 'SINGLE_POST';
 export const MARK_ALL_READ = 'MARK_ALL_READ';
+export const SEARCH = 'SEARCH';

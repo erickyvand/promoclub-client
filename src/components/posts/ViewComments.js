@@ -118,7 +118,9 @@ const ViewComments = ({ postId, commentMessage }) => {
 					</Grid>
 				))
 			)}
-			{viewComments.loading && (
+			{postLength !== limit && viewComments.loading ? (
+				''
+			) : (
 				<CircularProgress size={10} className={classes.circularProgress} />
 			)}
 		</div>

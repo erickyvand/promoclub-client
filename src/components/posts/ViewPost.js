@@ -252,7 +252,9 @@ const ViewPost = ({ postedMessage }) => {
 					);
 				})
 			)}
-			{viewPosts.loading && (
+			{postLength !== limit && viewPosts.loading ? (
+				''
+			) : (
 				<CircularProgress size={10} className={classes.circularProgress} />
 			)}
 		</div>
