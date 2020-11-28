@@ -68,11 +68,16 @@ const EditPost = ({ postId, userId }) => {
 	};
 
 	const handleEdit = id => {
-		const singlePost = posts.data.find(p => p.id === id);
-		setPost(singlePost.post === 'undefined' ? '' : singlePost.post);
-		setFile(singlePost.mediaFile);
-		setFileType(singlePost.fileType);
-		setId(id);
+		let singlePost;
+		if (posts.data !== undefined) {
+			singlePost = posts.data.find(p => p.id === id);
+		}
+		if (singlePost !== undefined) {
+			setPost(singlePost.post);
+			setFile(singlePost.mediaFile);
+			setFileType(singlePost.fileType);
+		}
+		setId(parseInt(id));
 		setOldPath(location.pathname);
 		setNewPath(newPath);
 		window.history.pushState(null, null, newPath);
@@ -114,12 +119,14 @@ const EditPost = ({ postId, userId }) => {
 		formData.append('post', post);
 		formData.append('mediaFile', mediaFile);
 		dispatch(editPostAction(id, formData));
-		setUnlock(false);
 		window.history.pushState(null, null, oldPath);
+		setTimeout(() => {
+			setUnlock(false);
+		}, 10000);
 	};
 	useEffect(() => {
 		if (location.pathname === newPath) {
-			handleEdit();
+			handleEdit(id);
 		}
 	}, [editPostMessage]);
 
@@ -188,13 +195,13 @@ const EditPost = ({ postId, userId }) => {
 									''
 								) : fileType === 'video/mp4' || fileType === 'video/x-m4v' ? (
 									<video
-										src={`${process.env.API_URL}/${file}`}
+										src={file}
 										style={{ width: 190, height: 190 }}
 										controls
 									/>
 								) : (
 									<Avatar
-										src={`${process.env.API_URL}/${file}`}
+										src={file}
 										variant='rounded'
 										style={{ width: 190, height: 190 }}
 									></Avatar>

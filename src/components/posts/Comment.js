@@ -79,11 +79,7 @@ const Comment = ({ postId }) => {
 		<div className={classes.commentRoot}>
 			<Grid container direction='row' spacing={1}>
 				<Grid item xs={2} sm={1} md={1}>
-					<Avatar
-						src={`${process.env.API_URL}/${sessionStorage.getItem(
-							'profilePicture'
-						)}`}
-					>
+					<Avatar src={sessionStorage.getItem('profilePicture')}>
 						{sessionStorage.getItem('firstName').charAt(0)}
 					</Avatar>
 				</Grid>

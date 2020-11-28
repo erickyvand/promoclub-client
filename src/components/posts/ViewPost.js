@@ -19,6 +19,7 @@ import useStyles from '../../styles/postStyle';
 import {
 	viewPostsAction,
 	allCommentsAction,
+	countOwnPostsAction,
 } from '../../redux/actions/postAction';
 import ReadMore from '../layouts/ReadMore';
 import Comment from './Comment';
@@ -33,9 +34,10 @@ const ViewPost = ({ postedMessage }) => {
 
 	const viewPosts = useSelector(state => state.viewPosts);
 	const message = useSelector(state => state.viewPosts.message);
-	const postMessage = useSelector(state => state.postReducer.message);
+	const postMessage = useSelector(state => state.postReducer.data.createdAt);
 	const updatedMessage = useSelector(state => state.editPost.data.updatedAt);
 	const allComments = useSelector(state => state.allComments);
+	const deletedPostMessage = useSelector(state => state.deletePost.message);
 	const comments = [...allComments.data];
 
 	const [page] = useState(1);
@@ -68,12 +70,14 @@ const ViewPost = ({ postedMessage }) => {
 	useEffect(() => {
 		dispatch(viewPostsAction(page, limit));
 		dispatch(allCommentsAction());
+		dispatch(countOwnPostsAction(sessionStorage.getItem('id')));
 	}, [
 		message,
 		postMessage,
 		limit,
 		updatedMessage,
-		postedMessage,
+			postedMessage,
+		deletedPostMessage,
 		sessionStorage.getItem('id'),
 	]);
 
@@ -163,9 +167,7 @@ const ViewPost = ({ postedMessage }) => {
 									<Link
 										to={`/${post.User.firstName}${post.User.lastName}${post.User.id}`.toLowerCase()}
 									>
-										<Avatar
-											src={`${process.env.API_URL}/${post.User.profilePicture}`}
-										>
+										<Avatar src={post.User.profilePicture}>
 											{post.User.firstName.charAt(0)}
 										</Avatar>
 									</Link>
@@ -201,14 +203,14 @@ const ViewPost = ({ postedMessage }) => {
 									post.fileType === 'image/png' ||
 									post.fileType === 'image/gif' ? (
 										<img
-											src={`${process.env.API_URL}/${post.mediaFile}`}
+											src={post.mediaFile}
 											alt=''
 											className={classes.imagePost}
 										/>
 									) : post.fileType === 'video/mp4' ||
 									  post.fileType === 'video/x-m4v' ? (
 										<video
-											src={`${process.env.API_URL}/${post.mediaFile}`}
+											src={post.mediaFile}
 											controls
 											className={classes.videoPost}
 										/>
@@ -253,9 +255,9 @@ const ViewPost = ({ postedMessage }) => {
 				})
 			)}
 			{viewPosts.loading ? (
-				<CircularProgress size={10} className={classes.circularProgress} />
-			) : (
 				''
+			) : (
+				<CircularProgress size={10} className={classes.circularProgress} />
 			)}
 		</div>
 	);

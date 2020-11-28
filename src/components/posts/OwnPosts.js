@@ -100,9 +100,7 @@ const OwnPosts = ({ userId }) => {
 									<Link
 										to={`/${post.User.firstName}${post.User.lastName}${post.User.id}`.toLowerCase()}
 									>
-										<Avatar
-											src={`${process.env.API_URL}/${post.User.profilePicture}`}
-										>
+										<Avatar src={post.User.profilePicture}>
 											{post.User.firstName.charAt(0)}
 										</Avatar>
 									</Link>
@@ -135,14 +133,14 @@ const OwnPosts = ({ userId }) => {
 							post.fileType === 'image/png' ||
 							post.fileType === 'image/gif' ? (
 								<img
-									src={`${process.env.API_URL}/${post.mediaFile}`}
+									src={post.mediaFile}
 									alt=''
 									className={classes.imagePost}
 								/>
 							) : post.fileType === 'video/mp4' ||
 							  post.fileType === 'video/x-m4v' ? (
 								<video
-									src={`${process.env.API_URL}/${post.mediaFile}`}
+									src={post.mediaFile}
 									controls
 									className={classes.videoPost}
 								/>

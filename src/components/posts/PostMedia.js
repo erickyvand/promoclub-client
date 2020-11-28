@@ -49,7 +49,7 @@ const PostMedia = ({ userId }) => {
 						photo.fileType === 'image/png' ||
 						photo.fileType === 'image/gif' ? (
 							<img
-								src={`${process.env.API_URL}/${photo.mediaFile}`}
+								src={photo.mediaFile}
 								alt=''
 								style={{
 									cursor: 'pointer',
@@ -60,7 +60,7 @@ const PostMedia = ({ userId }) => {
 						) : photo.fileType === 'video/mp4' ||
 						  photo.fileType === 'video/x-m4v' ? (
 							<video
-								src={`${process.env.API_URL}/${photo.mediaFile}`}
+								src={photo.mediaFile}
 								controls
 								style={{
 									height: 300,

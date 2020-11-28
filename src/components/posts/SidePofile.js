@@ -13,12 +13,13 @@ const SidePofile = () => {
 
 	const profile = useSelector(state => state.profile);
 	const countOwnPosts = useSelector(state => state.countOwnPosts);
+	const deletedPostMessage = useSelector(state => state.deletePost.message);
 
 	useEffect(() => {
 		document.title = `(${sessionStorage.getItem('count')}) Promoclub | Feed`;
 		dispatch(profileAction(sessionStorage.getItem('id')));
 		dispatch(countOwnPostsAction(sessionStorage.getItem('id')));
-	}, [sessionStorage.getItem('count')]);
+	}, [sessionStorage.getItem('count'), deletedPostMessage]);
 
 	return (
 		<div className='side-profile'>
@@ -39,7 +40,7 @@ const SidePofile = () => {
 							/>
 						) : (
 							<Avatar
-								src={`${process.env.API_URL}/${profile.data.profilePicture}`}
+								src={profile.data.profilePicture}
 								style={{
 									width: 100,
 									height: 100,

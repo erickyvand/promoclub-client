@@ -251,11 +251,7 @@ const Navigation = () => {
 							aria-haspopup='true'
 							color='inherit'
 						>
-							<Avatar
-								src={`${process.env.API_URL}/${sessionStorage.getItem(
-									'profilePicture'
-								)}`}
-							>
+							<Avatar src={sessionStorage.getItem('profilePicture')}>
 								{sessionStorage.getItem('firstName').charAt(0)}
 							</Avatar>
 						</IconButton>
@@ -331,7 +327,7 @@ const Navigation = () => {
 											className={classes.circularProgress}
 										/>
 									) : search.data.rows.length === 0 ? (
-										'No search found'
+										'No results found'
 									) : (
 										search.data.rows.map(result => (
 											<Grid item key={result.id} ref={lastElement}>
@@ -351,7 +347,7 @@ const Navigation = () => {
 												>
 													<Grid item>
 														<Avatar
-															src={`${process.env.API_URL}/${result.profilePicture}`}
+															src={result.profilePicture}
 															variant='square'
 														></Avatar>
 													</Grid>
@@ -462,9 +458,7 @@ const Navigation = () => {
 																					}
 																				>
 																					<Avatar
-																						src={`${process.env.API_URL}/${
-																							user && user.profilePicture
-																						}`}
+																						src={user && user.profilePicture}
 																					></Avatar>
 																				</Grid>
 																				<Grid
@@ -536,9 +530,7 @@ const Navigation = () => {
 																					}
 																				>
 																					<Avatar
-																						src={`${process.env.API_URL}/${
-																							user && user.profilePicture
-																						}`}
+																						src={user && user.profilePicture}
 																					></Avatar>
 																				</Grid>
 																				<Grid
@@ -666,9 +658,7 @@ const Navigation = () => {
 																					}
 																				>
 																					<Avatar
-																						src={`${process.env.API_URL}/${
-																							user && user.profilePicture
-																						}`}
+																						src={user && user.profilePicture}
 																					></Avatar>
 																				</Grid>
 																				<Grid
@@ -740,9 +730,7 @@ const Navigation = () => {
 																					}
 																				>
 																					<Avatar
-																						src={`${process.env.API_URL}/${
-																							user && user.profilePicture
-																						}`}
+																						src={user && user.profilePicture}
 																					></Avatar>
 																				</Grid>
 																				<Grid
@@ -816,11 +804,7 @@ const Navigation = () => {
 										onClick={handleProfileMenuOpen}
 										color='inherit'
 									>
-										<Avatar
-											src={`${process.env.API_URL}/${sessionStorage.getItem(
-												'profilePicture'
-											)}`}
-										>
+										<Avatar src={sessionStorage.getItem('profilePicture')}>
 											{sessionStorage.getItem('firstName').charAt(0)}
 										</Avatar>
 										&nbsp;

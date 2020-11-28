@@ -18,7 +18,7 @@ const deletePostReducer = (state = initialState, action) => {
 			return {
 				...state,
 				loading: false,
-				message: action.payload.data.message,
+				message: Math.random(),
 			};
 		case rejected(DELETE_POST):
 			return {

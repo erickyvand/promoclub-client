@@ -161,11 +161,7 @@ const EditProfile = ({ userId, profile }) => {
 					<DialogContent>
 						<Avatar
 							variant='circle'
-							src={
-								file
-									? file
-									: `${process.env.API_URL}/${profile.data.profilePicture}`
-							}
+							src={file ? file : profile.data.profilePicture}
 							className={classes.avatarEditProfile}
 						></Avatar>
 						{error && <Alert severity='error'>{error}</Alert>}

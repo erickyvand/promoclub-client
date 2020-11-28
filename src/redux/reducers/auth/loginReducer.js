@@ -17,7 +17,6 @@ const loginReducer = (state = initialState, action) => {
 				loading: true,
 			};
 		case fulfilled(LOGIN):
-			console.log(action.payload.data.data);
 			return {
 				...state,
 				loading: false,

@@ -67,9 +67,7 @@ const Post = props => {
 									<Link
 										to={`/${post.data.User.firstName}${post.data.User.lastName}${post.data.User.id}`.toLowerCase()}
 									>
-										<Avatar
-											src={`${process.env.API_URL}/${post.data.User.profilePicture}`}
-										>
+										<Avatar src={post.data.User.profilePicture}>
 											{post.data.User.firstName.charAt(0)}
 										</Avatar>
 									</Link>
@@ -133,10 +131,10 @@ const Post = props => {
 											component='p'
 										>
 											{commentCount.length === 0
-											? ''
-											: commentCount.length === 1
-											? `${commentCount.length} comment`
-											: `${commentCount.length} comments`}
+												? ''
+												: commentCount.length === 1
+												? `${commentCount.length} comment`
+												: `${commentCount.length} comments`}
 										</Typography>
 									</IconButton>
 								</Tooltip>
