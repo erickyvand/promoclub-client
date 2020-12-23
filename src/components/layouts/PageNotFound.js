@@ -23,7 +23,7 @@ const PageNotFound = () => {
 						<CardActionArea>
 							<CardMedia
 								style={{ height: '300px' }}
-								image='/assets/notfound.png'
+								image='./assets/notfound.png'
 								title='Group of people'
 							/>
 							<CardContent>

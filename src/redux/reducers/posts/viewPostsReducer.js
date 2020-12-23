@@ -19,7 +19,7 @@ const viewPostsReducer = (state = initialState, action) => {
 			return {
 				...state,
 				loading: false,
-				message: Math.random(),
+				message: action.payload.data.message,
 				data: action.payload.data.data,
 			};
 		case rejected():

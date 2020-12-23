@@ -62,9 +62,7 @@ const ViewComments = ({ postId, commentMessage }) => {
 							<Link
 								to={`/${comment.User.firstName}${comment.User.lastName}${comment.User.id}`.toLowerCase()}
 							>
-								<Avatar
-									src={`${process.env.API_URL}/${comment.User.profilePicture}`}
-								></Avatar>
+								<Avatar src={comment.User.profilePicture}></Avatar>
 							</Link>
 						</Grid>
 						<Grid item xs={10} sm={11} md={11}>

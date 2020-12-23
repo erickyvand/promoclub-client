@@ -206,7 +206,7 @@ const Login = () => {
 							<Grid item>
 								<Avatar
 									alt='Google'
-									src='/assets/google.jpg'
+									src='./assets/google.jpg'
 									onClick={handleGoogle}
 									className={classes.avatarLarge}
 								/>
@@ -215,7 +215,7 @@ const Login = () => {
 							<Grid item>
 								<Avatar
 									alt='Facebook'
-									src='/assets/facebook.png'
+									src='./assets/facebook.png'
 									onClick={handleFacebook}
 									className={classes.avatarLarge}
 								/>

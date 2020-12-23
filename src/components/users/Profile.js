@@ -26,6 +26,7 @@ import { profileAction } from '../../redux/actions/userAction';
 import EditProfile from './EditProfile';
 import OwnPosts from '../posts/OwnPosts';
 import PostMedia from '../posts/PostMedia';
+import { Redirect } from 'react-router-dom';
 
 const a11yProps = index => {
 	return {
@@ -35,6 +36,10 @@ const a11yProps = index => {
 };
 
 const Profile = props => {
+	if (!sessionStorage.getItem('token') || !sessionStorage.getItem('id')) {
+		return <Redirect to='/' />;
+	}
+
 	const username = props.match.params.username;
 	const userId = username.replace(/[^\d.]/g, '');
 
@@ -93,17 +98,13 @@ const Profile = props => {
 				</Grid>
 				<Grid item xs={12} sm={12} md={8}>
 					{profile.loading ? (
-						<Avatar>
-							<Skeleton
-								animation='wave'
-								variant='circle'
-								className={classes.profileImage}
-							/>
+						<Avatar className={classes.profileImage}>
+							<Skeleton animation='wave' variant='circle' />
 						</Avatar>
 					) : (
 						<Avatar
 							variant='circle'
-							src={`${process.env.API_URL}/${profile.data.profilePicture}`}
+							src={profile.data.profilePicture}
 							className={classes.profileImage}
 							onClick={handleOpenDialog}
 						/>
@@ -116,7 +117,7 @@ const Profile = props => {
 					<DialogContent>
 						<Avatar
 							variant='rounded'
-							src={`${process.env.API_URL}/${profile.data.profilePicture}`}
+							src={profile.data.profilePicture}
 							style={{ width: 500, height: 500 }}
 						/>
 					</DialogContent>

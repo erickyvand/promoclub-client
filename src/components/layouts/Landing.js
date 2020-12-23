@@ -31,7 +31,7 @@ const Landing = () => {
 							<CardActionArea>
 								<CardMedia
 									style={{ height: '300px' }}
-									image='/assets/selfie.jpg'
+									image='./assets/selfie.jpg'
 									title='Ladies taking selfie'
 								/>
 								<CardContent>
@@ -55,7 +55,7 @@ const Landing = () => {
 							<CardActionArea>
 								<CardMedia
 									style={{ height: '300px' }}
-									image='/assets/connect.jpeg'
+									image='./assets/connect.jpeg'
 									title='Group of people'
 								/>
 								<CardContent>
