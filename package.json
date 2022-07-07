@@ -35,7 +35,7 @@
     "file-loader": "^6.0.0",
     "formik": "^2.1.5",
     "jwt-decode": "^2.2.0",
-    "moment": "^2.27.0",
+    "moment": "^2.29.4",
     "query-string": "^6.13.1",
     "react": "^16.13.1",
     "react-autocomplete": "^1.8.1",
